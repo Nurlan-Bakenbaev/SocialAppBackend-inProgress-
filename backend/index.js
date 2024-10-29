@@ -13,6 +13,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Routes
+app.get("/", (req, res) => {
+  res.status(200).json("hello");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 

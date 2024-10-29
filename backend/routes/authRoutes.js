@@ -13,6 +13,6 @@ authRoutes.post("/signup", signup);
 
 authRoutes.get("/getme", protectedRoute, getMyUser);
 
-authRoutes.post("/signin", signin);
+authRoutes.post("/login", signin);
 
 authRoutes.post("/logout", logout);

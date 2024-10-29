@@ -72,12 +72,10 @@ export const signin = async (req, res) => {
     }
 
     const passwordMatch = await bcrypt.compare(password, loginUser?.password);
-    console.log(loginUser);
     if (!passwordMatch || !loginUser) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
     //this function is comes from lib.utils file
-
     generateTokenAndSetToken(loginUser._id, res);
 
     //send response

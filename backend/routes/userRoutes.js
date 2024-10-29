@@ -8,7 +8,7 @@ import {
 } from "../controllers/usersControllers.js";
 const userRoutes = express.Router();
 userRoutes.get("/profile/:username", protectedRoute, getUserProfile);
-userRoutes.get("/suggested", getSuggestedUsers);
+userRoutes.get("/suggested", protectedRoute, getSuggestedUsers);
 userRoutes.post("/follow/:id", protectedRoute, followUnFollowUser);
-userRoutes.patch("/update/:id", protectedRoute, updateUser);
+userRoutes.patch("/update", protectedRoute, updateUser);
 export default userRoutes;
