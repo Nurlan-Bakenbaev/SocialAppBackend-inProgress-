@@ -15,11 +15,7 @@ const userSchema = mongoose.Schema(
       select: false,
       type: String,
       required: [true, "Password is required"],
-      minLength: [8, "Password must be at least 8 characters long"],
-      match: [
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (@$!%*?&).",
-      ],
+      minLength: [6, "Password must be at least 6 characters long"],
     },
     //User has a followers
     followers: [
@@ -50,7 +46,7 @@ const userSchema = mongoose.Schema(
 );
 
 ///// HASH PASSWORD PRE SAVE
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
