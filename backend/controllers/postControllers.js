@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 import Notification from "../models/Notification.js";
 import { v2 as cloudinary } from "cloudinary";
+import { populate } from "dotenv";
 
 // Create a new post
 export const createPost = async (req, res) => {
@@ -51,6 +52,28 @@ export const getAllPosts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+// following posts
+export const getFollowingPosts = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const following = user.following;
+    const feedPosts = await Post.find({ user: { $in: following } })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("user");
+    if (feedPosts.length === 0) {
+      return res.status(200).json({ message: "No posts found" });
+    }
+    res.status(200).json(feedPosts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 //get user liked Posts
 export const getAllikedPosts = async (req, res) => {
@@ -65,7 +88,25 @@ export const getAllikedPosts = async (req, res) => {
     })
       .populate("user")
       .populate("comments.user");
+    if (likedPosts.length === 0) {
+      return res.status(200).json({ message: "No liked posts found" });
+    }
     res.status(200).json(likedPosts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// get user Posts
+export const getUserPosts = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.find({ username: username });
+    const posts = await Post.find({ user: user._id }).populate("user");
+    if (posts.length === 0) {
+      return res.status(200).json({ error: "No posts found" });
+    }
+    res.status(200).json({ status: "success", data: posts });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

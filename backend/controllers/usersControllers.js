@@ -7,7 +7,9 @@ import bcrypt from "bcryptjs";
 export const getUserProfile = async (req, res) => {
   try {
     const { username } = req.params;
-    const getUser = await User.findOne({ username }).select("-password");
+    console.log(username);
+    const getUser = await User.findOne({ username })
+      .select("-password")
 
     if (!getUser) {
       return res.status(404).json({ status: "false", error: "User not found" });
