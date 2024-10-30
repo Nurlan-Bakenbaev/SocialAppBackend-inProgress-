@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { authRoutes } from "./routes/authRoutes.js";
 import { connection } from "./db/db.js";
 import { postRoutes } from "./routes/postRoutes.js";
+import {notificationsRoutes} from "./routes/notificationsRoutes.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/notifications", notificationsRoutes);
 
 app.all("*", (req, res) => {
   res.status(404).json({ error: `Page ${req.originalUrl} Not Found ` });
