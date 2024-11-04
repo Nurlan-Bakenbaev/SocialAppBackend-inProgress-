@@ -31,12 +31,14 @@ const UserInfo = () => {
   };
 
   return (
-    <div className="card border bg-base-100 shadow-md rounded-lg p-4 w-64">
+    <div
+      className="border bg-base-100 shadow-md rounded-lg p-4 
+     mx-auto">
       <div className="flex items-center mb-3">
         <img
           src={user.profilePicture}
           alt="User Profile"
-          className="w-12 h-12 rounded-full border-2 border-gray-300 mr-2"
+          className="w-16 h-16 rounded-full border-2 border-gray-300 mr-3"
         />
         <div>
           <h2 className="text-lg font-semibold">{user.fullName}</h2>

@@ -4,15 +4,13 @@ import Posts from "./components/Posts";
 import FollowingCard from "./components/FollowingCard";
 import UserInfo from "./components/UserInfo";
 const Home = () => {
-
   return (
     <div
       className=" flex flex-wrap flex-md-row w-sm-[100%] 
        w-md-[80%] gap-3 mx-auto  justify-center">
-      <div className="flex flex-col">
-        <div>
-          <UserInfo />
-        </div>
+      <div className="flex  gap-3 flex-col">
+        <UserInfo />
+
         <div className="flex flex-col mt-5">
           <p className="text-center"> Interesting People:</p>
           <FollowingCard />
