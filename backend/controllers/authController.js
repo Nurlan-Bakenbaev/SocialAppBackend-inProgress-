@@ -10,6 +10,7 @@ export const signup = async (req, res) => {
 
     // validation regex
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email address" });
     }
@@ -22,7 +23,7 @@ export const signup = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ error: "Email already exists" });
     }
-    // Create new user 
+    // Create new user
 
     const newUser = new User({
       username,
@@ -62,7 +63,7 @@ export const signup = async (req, res) => {
 //////////////////////////////////////////////
 
 //login user
-export const signin = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const loginUser = await User.findOne({ email: email }).select("+password");

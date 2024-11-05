@@ -1,20 +1,52 @@
 "use client";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useState } from "react";
-
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 const Login = () => {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState(null); // Assuming you want to manage errors
 
+  const router = useRouter();
   const handleChangeLogin = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  const {
+    mutate: loginMutation,
+    isError,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: async (userData) => {
+      const res = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error);
+      }
+      const data = await res.json();
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Login successfully!");
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    },
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
+    loginMutation(userData);
   };
 
   return (
@@ -49,16 +81,15 @@ const Login = () => {
               className="input input-bordered w-full"
               required
             />
-            {error && <p className="text-red-500">{error}</p>}
+            <p className="text-red-500">{error?.message}</p>
           </div>
-
           <button
             type="submit"
             className="text-white font-bold px-7 
             right-0 btn bg-gradient-to-tr from-purple-500
             to-orange-500 transition-all ease-out duration-500
             hover:bg-gradient-to-tl hover:scale-105">
-            Login
+            {isPending ? "Loading..." : "Login"}
           </button>
         </form>
         <p className="text-center">

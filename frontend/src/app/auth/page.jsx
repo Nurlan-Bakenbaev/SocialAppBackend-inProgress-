@@ -28,12 +28,12 @@ const SignUp = () => {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || "Something went wrong");
+        throw new Error(errorData.error);
       }
 
       const data = await res.json();
       if (data.error) {
-        throw new Error(data.error);
+        throw new Error(data.error || "Something wrong");
       }
 
       return data;
@@ -43,9 +43,6 @@ const SignUp = () => {
       setTimeout(() => {
         window.location.href = "/login";
       }, 2000);
-    },
-    onError: (err) => {
-      toast.error(err.message);
     },
   });
 

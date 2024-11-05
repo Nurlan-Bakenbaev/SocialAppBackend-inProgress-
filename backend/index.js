@@ -10,6 +10,7 @@ import { postRoutes } from "./routes/postRoutes.js";
 import { notificationsRoutes } from "./routes/notificationsRoutes.js";
 
 const app = express();
+dotenv.config();
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -17,18 +18,15 @@ app.use(
     credentials: true,
   })
 );
-
-dotenv.config();
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 //Middleware
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //Routes
 app.get("/", (req, res) => {

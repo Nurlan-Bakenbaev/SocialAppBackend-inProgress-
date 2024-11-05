@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { FaUser, FaEnvelope, FaPen, FaLink, FaUsers } from "react-icons/fa";
+import { FaEnvelope, FaPen, FaLink, FaUsers } from "react-icons/fa";
 
 const UserInfo = () => {
   const [user, setUser] = useState({
@@ -31,27 +31,25 @@ const UserInfo = () => {
   };
 
   return (
-    <div
-      className="border bg-base-100 shadow-md rounded-lg p-4 
-     mx-auto">
-      <div className="flex items-center mb-3">
+    <div className="border bg-base-100 shadow-md rounded-lg p-4 max-w-md mx-auto sm:max-w-lg lg:max-w-xl">
+      <div className="flex flex-col sm:flex-row items-center mb-3">
         <img
           src={user.profilePicture}
           alt="User Profile"
-          className="w-16 h-16 rounded-full border-2 border-gray-300 mr-3"
+          className="w-16 h-16 rounded-full border-2 border-gray-300 mb-2 sm:mb-0 sm:mr-3"
         />
-        <div>
+        <div className="text-center sm:text-left">
           <h2 className="text-lg font-semibold">{user.fullName}</h2>
           <p className="text-gray-500 text-sm">@{user.username}</p>
         </div>
       </div>
 
-      <div className="flex flex-col">
-        <div className="flex items-center mb-1">
+      <div className="flex flex-wrap justify-center sm:justify-start">
+        <div className="flex items-center mb-1 mr-2">
           <FaPen className="text-gray-600 mr-1" />
           <span className="text-sm">{user.posts || 0} Posts</span>
         </div>
-        <div className="flex items-center mb-1">
+        <div className="flex items-center mb-1 mr-2">
           <FaUsers className="text-gray-600 mr-1" />
           <span className="text-sm">{user.followers || 0} Followers</span>
         </div>
@@ -63,25 +61,27 @@ const UserInfo = () => {
 
       <h3 className="font-semibold mt-3 text-sm">Bio:</h3>
       {isEditingBio ? (
-        <div className="flex mb-3">
+        <div className="flex flex-col sm:flex-row mb-3">
           <input
             type="text"
             value={newBio}
             onChange={(e) => setNewBio(e.target.value)}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full sm:w-auto sm:flex-1"
           />
           <button
             onClick={handleBioChange}
-            className="btn btn-primary btn-sm ml-2">
+            className="btn btn-primary btn-sm mt-2 sm:mt-0 sm:ml-2">
             Save
           </button>
         </div>
       ) : (
-        <div className="flex mb-3 items-center">
-          <p className="text-gray-700 text-sm">{user.bio}</p>
+        <div className="flex flex-col sm:flex-row mb-3 items-center">
+          <p className="text-gray-700 text-sm text-center sm:text-left">
+            {user.bio}
+          </p>
           <button
             onClick={() => setIsEditingBio(true)}
-            className="btn btn-link text-sm ml-2">
+            className="btn btn-link text-sm mt-2 sm:mt-0 sm:ml-2">
             Edit
           </button>
         </div>
@@ -89,16 +89,16 @@ const UserInfo = () => {
 
       <h3 className="font-semibold text-sm">Links:</h3>
       {isEditingLinks ? (
-        <div className="flex mb-3">
+        <div className="flex flex-col sm:flex-row mb-3">
           <input
             type="text"
             value={newLinks}
             onChange={(e) => setNewLinks(e.target.value)}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full sm:w-auto sm:flex-1"
           />
           <button
             onClick={handleLinksChange}
-            className="btn btn-primary btn-sm ml-2">
+            className="btn btn-primary btn-sm mt-2 sm:mt-0 sm:ml-2">
             Save
           </button>
         </div>
@@ -113,7 +113,7 @@ const UserInfo = () => {
           ))}
           <button
             onClick={() => setIsEditingLinks(true)}
-            className="btn btn-link text-sm">
+            className="btn btn-link text-sm mt-2 sm:mt-0">
             Edit Links
           </button>
         </ul>
