@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
+import { FaRegBell } from "react-icons/fa";
 const NavBar = () => {
   const pathname = usePathname();
 
@@ -28,6 +29,11 @@ const NavBar = () => {
             className="m-5  hover:scale-105 hover:text-blue-500"
             href={"/login"}>
             Login
+          </Link>
+          <Link
+            className="m-5  hover:scale-105 hover:text-blue-500"
+            href={"/notify"}>
+            <FaRegBell fontSize={18} />
           </Link>
         </ul>
       </nav>

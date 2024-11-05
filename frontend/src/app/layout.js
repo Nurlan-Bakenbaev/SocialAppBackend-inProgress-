@@ -1,7 +1,10 @@
+import QueryProviderWrapper from "./components/QueryProviderWrapper";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "./components/NavBar";
 import Menu from "./components/Menu";
+import { Toaster } from "react-hot-toast";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -23,9 +26,12 @@ export default function RootLayout({ children }) {
     <html data-theme="light" lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NavBar />
-        <div className="mb-24 mt-10 ">{children}</div>
-        <Menu />
+        <QueryProviderWrapper>
+          <NavBar />
+          <div className="mb-24 mt-10 ">{children}</div>
+          <Menu />
+        </QueryProviderWrapper>
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );

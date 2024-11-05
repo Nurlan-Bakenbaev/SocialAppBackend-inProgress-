@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { FaRegComment, FaHeart } from "react-icons/fa";
 import UserCard from "./UserCard";
-
+import { MdDeleteOutline } from "react-icons/md";
 const Posts = () => {
   const [visiblePostIndex, setVisiblePostIndex] = useState(null);
 
@@ -33,9 +33,7 @@ const Posts = () => {
   return (
     <div>
       {posts.map((post, index) => (
-        <div
-          key={index}
-          className="bg-white shadow-md border rounded-lg p-3 mt-4">
+        <div key={index} className="shadow-md border rounded-lg p-3 mt-4">
           <UserCard
             userLogo={post.userLogo}
             date={post.date}
@@ -63,6 +61,11 @@ const Posts = () => {
               onClick={() => toggleComments(index)}>
               <FaRegComment className="text-gray-500 mr-1" />
               <span>{post.comments} Comments</span>
+            </div>
+            <div className="flex items-center cursor-pointer">
+              <button>
+                <MdDeleteOutline fontSize={20} />
+              </button>
             </div>
           </div>
 

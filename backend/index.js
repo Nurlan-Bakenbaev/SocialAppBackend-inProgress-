@@ -2,13 +2,21 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
+import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 import { authRoutes } from "./routes/authRoutes.js";
 import { connection } from "./db/db.js";
 import { postRoutes } from "./routes/postRoutes.js";
-import {notificationsRoutes} from "./routes/notificationsRoutes.js";
+import { notificationsRoutes } from "./routes/notificationsRoutes.js";
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
 
 dotenv.config();
 

@@ -14,7 +14,6 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Invalid email address" });
     }
     // Check user exists
-
     const userNameExists = await User.findOne({ username });
     if (userNameExists) {
       return res.status(400).json({ error: "Username already exists" });
@@ -23,7 +22,7 @@ export const signup = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ error: "Email already exists" });
     }
-    // Create new user
+    // Create new user 
 
     const newUser = new User({
       username,

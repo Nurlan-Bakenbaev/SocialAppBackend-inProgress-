@@ -1,6 +1,8 @@
 "use client";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const [userData, setUserData] = useState({
@@ -9,26 +11,64 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  const error = false;
 
-  const handleChangeSignUp = (e) => {
+  const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  const { mutate, isError, isLoading, error } = useMutation({
+    mutationFn: async (userData) => {
+      const res = await fetch("http://localhost:8000/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Something went wrong");
+      }
+
+      const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("User created successfully!");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(userData);
+  };
+
   return (
-    <div className="flex items-center justify-center">
-      <fieldset className="w-full max-w-md p-4 shadow-xl rounded-lg bg-white">
-        <h2 className="text-xl font-bold text-center">Sign Up</h2>
-        <form className="space-y-2">
+    <div className="flex items-center justify-center min-h-screen ">
+      <fieldset className="w-full max-w-md p-5 shadow-lg rounded-lg ">
+        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="fullname" className="label">
               Full Name
             </label>
             <input
               name="fullname"
-              onChange={handleChangeSignUp}
+              onChange={handleChange}
               id="fullname"
               type="text"
+              value={userData.fullname}
               placeholder="Jake Nolan"
               className="input input-bordered w-full"
               required
@@ -36,13 +76,14 @@ const SignUp = () => {
           </div>
           <div>
             <label htmlFor="username" className="label">
-              User Name
+              Username
             </label>
             <input
               name="username"
-              onChange={handleChangeSignUp}
+              onChange={handleChange}
               id="username"
               type="text"
+              value={userData.username}
               placeholder="nolan_1991"
               className="input input-bordered w-full"
               required
@@ -54,9 +95,10 @@ const SignUp = () => {
             </label>
             <input
               name="email"
-              onChange={handleChangeSignUp}
+              onChange={handleChange}
               id="email"
               type="email"
+              value={userData.email}
               placeholder="example@mail.com"
               className="input input-bordered w-full"
               required
@@ -68,30 +110,31 @@ const SignUp = () => {
             </label>
             <input
               name="password"
-              onChange={handleChangeSignUp}
+              onChange={handleChange}
               id="password"
               type="password"
+              value={userData.password}
               placeholder="********"
               className="input input-bordered w-full"
               required
             />
-            {error && (
-              <p className="text-sm text-gray-500">
-                Password must be at least 8 characters long and contain at least
-                one uppercase letter, one lowercase letter, one number, and one
-                special character.
-              </p>
+            {isError && (
+              <p className="text-sm text-red-500 mt-2">{error.message}</p>
             )}
           </div>
-
           <button
             type="submit"
-            className="text-white font-bold px-7 right-0 btn bg-gradient-to-tr from-purple-500 to-orange-500 transition-all ease-out duration-500 hover:bg-gradient-to-tl hover:scale-105">
-            Sign Up
+            disabled={isLoading}
+            className={`btn text-white font-bold w-full py-2 rounded-lg transition-all duration-300 ${
+              isLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-tr from-purple-500 to-orange-500 hover:bg-gradient-to-tl hover:scale-105"
+            }`}>
+            {isLoading ? "Loading" : "Sign Up"}
           </button>
         </form>
-        <p className="text-center">
-          Already have an account?
+        <p className="text-center mt-4">
+          Already have an account?{" "}
           <Link href="/login" className="link text-blue-600">
             Log in
           </Link>
