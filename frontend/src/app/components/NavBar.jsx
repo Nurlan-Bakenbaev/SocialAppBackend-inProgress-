@@ -11,7 +11,6 @@ const NavBar = () => {
   const {
     isError,
     mutate: logOutMutation,
-    isPending,
     error,
   } = useMutation({
     mutationFn: async () => {
@@ -30,14 +29,19 @@ const NavBar = () => {
     },
     onSuccess: () => {
       toast.success("Logout successfully!");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to logout");
     },
   });
-
   if (pathname === "/login" || pathname === "/auth") {
     return null;
   }
   return (
-    <div className="shadow-lg  ">
+    <div className="shadow-lg">
       <nav className="navbar mx-auto w-[80%]">
         <div className="flex-1">
           <Link

@@ -8,9 +8,9 @@ const UserCard = ({ userLogo, date, username, id }) => {
         <div className="flex items-center mb-2 gap-1">
           <div>
             <img
-              src={userLogo}
+              src={userLogo || "/userPlaceholder.png"}
               alt="User Logo"
-              className="rounded-full w-[30px] h-[30px] object-cover"
+              className="rounded-full w-[35px] h-[35px] object-cover"
             />
           </div>
           <div>

@@ -1,5 +1,5 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -14,7 +14,7 @@ const Login = () => {
   const handleChangeLogin = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
+  const queryClient = useQueryClient();
   const {
     mutate: loginMutation,
     isError,
@@ -39,9 +39,10 @@ const Login = () => {
     },
     onSuccess: () => {
       toast.success("Login successfully!");
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
+
+      router.push("/");
+
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
   const handleSubmit = (e) => {

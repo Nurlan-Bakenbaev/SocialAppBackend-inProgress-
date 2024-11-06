@@ -8,7 +8,7 @@ const CreatePost = () => {
   });
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  console.log(file);
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
@@ -52,8 +52,9 @@ const CreatePost = () => {
         </div>
         <label
           htmlFor="file"
-          className="flex flex-row ite gap-2 shadow-sm   m-1 text-blue-500">
-          <FaImages fontSize={20} /> <span>Select Image</span>
+          className="flex flex-row  cursor-pointer items-center gap-2 shadow-sm   m-1 text-blue-500">
+          <FaImages fontSize={20} />
+          <span className=" cursor-pointer hover:scale-105 ">Select Image</span>
         </label>
         <input
           accept="image/"

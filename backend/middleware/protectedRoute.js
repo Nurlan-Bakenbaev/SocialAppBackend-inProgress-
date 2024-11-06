@@ -19,7 +19,7 @@ const protectedRoute = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    res.status(500).json({ error: "Server Error" });
+    res.status(200).json({ error: error.message });
   }
 };
 export default protectedRoute;
