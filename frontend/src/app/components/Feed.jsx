@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Posts from "./Posts";
 import PostsSkeleton from "./Skeleton/PostSkeletone";
 import { useQuery } from "@tanstack/react-query";
@@ -19,6 +19,8 @@ const Feed = ({ feedType }) => {
     data: postData,
     isLoading,
     error,
+    refetch,
+    isRefetching,
   } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
@@ -30,24 +32,31 @@ const Feed = ({ feedType }) => {
           },
           credentials: "include",
         });
-        const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error);
         }
+        const data = await res.json();
+
         return data;
       } catch (error) {
         throw new Error(data.error);
       }
     },
   });
-  console.log(postData);
+  useEffect(() => {
+    refetch();
+  }, [feedType, refetch]);
   return (
     <div>
       <h2 className="text-xl  my-4">
         {feedType === "latest" ? "Latest Posts" : "Following posts"}
       </h2>
-
-      {!postData ? <PostsSkeleton /> : <Posts postData={postData} />}
+      {error && <p className="text-red-500">Post not found</p>}
+      {!postData || isRefetching ? (
+        <PostsSkeleton />
+      ) : (
+        <Posts postData={postData} />
+      )}
     </div>
   );
 };

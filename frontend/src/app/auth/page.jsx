@@ -52,10 +52,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center ">
       <fieldset className="w-full max-w-md p-5 shadow-lg rounded-lg ">
-        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-xl font-bold text-center mb-2">Sign Up</h2>
+        <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="fullname" className="label">
               Full Name

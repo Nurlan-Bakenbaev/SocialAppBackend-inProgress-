@@ -6,6 +6,7 @@ export default function QueryProviderWrapper({ children }) {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
+        retry: 1,
       },
     },
   });

@@ -11,9 +11,13 @@ import Feed from "./components/Feed";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("latest");
-
   const router = useRouter();
-  const { data: authUser, isLoading: loading } = useQuery({
+
+  const {
+    data: authUser,
+    isLoading: loading,
+    error,
+  } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
@@ -24,17 +28,16 @@ const Home = () => {
           },
           credentials: "include",
         });
-        const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.error);
+          throw new Error("Failed to fetch user information");
         }
-        return data;
+        return await res.json();
       } catch (error) {
         throw new Error(error.message);
       }
     },
-    retry: false,
   });
+
   useEffect(() => {
     if (!loading && !authUser) {
       router.push("/login");
@@ -42,9 +45,7 @@ const Home = () => {
   }, [authUser, loading, router]);
 
   return (
-    <div
-      className="flex flex-wrap flex-md-row w-sm-[100%] 
-       w-md-[80%] gap-3 mx-auto justify-center">
+    <div className="flex flex-wrap md:flex-row sm:w-full md:w-[80%] gap-3 mx-auto justify-center">
       <div className="flex gap-3 flex-col">
         <UserInfo />
         <div className="flex flex-col mt-5">
@@ -55,14 +56,13 @@ const Home = () => {
       {loading && <Loading />}
       <div className="flex flex-col min-w-[320px]">
         <CreatePost />
-        <div className=" flex items-center mt-2 justify-between p-4 min-w-80">
-          <button onClick={() => setFeedType("latest")} className="btn">
-            Latest Posts{" "}
-          </button>
-
-          <button onClick={() => setFeedType("following")} className="btn">
-            Following posts{" "}
-          </button>
+        <div className="flex items-center mt-2 justify-between p-4 ">
+          <p onClick={() => setFeedType("latest")} className="btn">
+            Latest Posts
+          </p>
+          <p onClick={() => setFeedType("following")} className="btn">
+            Following posts
+          </p>
         </div>
         <Feed feedType={feedType} />
       </div>
