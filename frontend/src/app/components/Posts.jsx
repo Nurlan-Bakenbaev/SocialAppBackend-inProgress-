@@ -5,28 +5,57 @@ import { FaRegComment, FaHeart } from "react-icons/fa";
 import UserCard from "./UserCard";
 import { MdDeleteOutline } from "react-icons/md";
 import { timeAgo } from "@/app/components/helpers";
-
-const Comment = ({ comment }) => (
-  <div className="border-b py-2">
-    <strong>{comment.username}:</strong> {comment.text}
-  </div>
-);
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CiEdit } from "react-icons/ci";
+import Loading from "./Loading";
 const Posts = ({ postData: { data } }) => {
   const [visiblePostIndex, setVisiblePostIndex] = useState(null);
+  const queryClient = useQueryClient();
+  const authUser = queryClient.getQueryData(["authUser"]);
 
   const toggleComments = (index) => {
     setVisiblePostIndex((prevIndex) => (prevIndex === index ? null : index));
   };
- 
-
+  const { mutate: deletePost, isPending } = useMutation({
+    mutationFn: async (postId) => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/posts/delete/${postId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        if (!res.ok) {
+          throw new Error(data.error);
+        }
+        const data = await res.json();
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success("Post deleted successfully!");
+    },
+  });
+  const handleDeletePost = (postId) => {
+    deletePost(postId);
+  };
   if (data?.length === 0) {
     return <p>No posts found.</p>;
   }
   return (
     <div>
+      {isPending && <Loading />}
       {data?.map((post) => (
-        <div key={post._id} className="shadow-md border rounded-lg p-3 mt-4">
+        <div
+          key={post._id}
+          className="shadow-md border 
+        rounded-lg p-3 mt-4">
           <UserCard
             userLogo={post.user.profileImg}
             date={post.user.date}
@@ -53,8 +82,8 @@ const Posts = ({ postData: { data } }) => {
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex items-center">
-              <FaHeart className="text-red-500 mr-1" />
-              <span>{post.likes || 0}</span>
+              <FaHeart className="text-red-200 mr-1" />
+              <span>{post.likes || ""}</span>
             </div>
             <div
               className="flex items-center cursor-pointer"
@@ -62,16 +91,26 @@ const Posts = ({ postData: { data } }) => {
               <FaRegComment className="text-gray-500 mr-1" />
               <span>{post.comments?.length || 0} Comments</span>
             </div>
-            <button className="flex items-center cursor-pointer">
-              <MdDeleteOutline fontSize={20} />
-            </button>
+            {post?.user?._id === authUser?._id && (
+              <>
+                <button
+                  onClick={() => handleDeletePost(post._id)}
+                  className="flex btn items-center cursor-pointer">
+                  <MdDeleteOutline color="red" fontSize={20} />
+                </button>
+                <button className="btn">
+                  <CiEdit fontSize={20} />
+                </button>
+              </>
+            )}
           </div>
-
           {visiblePostIndex === data.indexOf(post) &&
             post.comments?.length > 0 && (
               <div className="mt-4">
-                {post.comments.map((comment, idx) => (
-                  <Comment key={idx} comment={comment} />
+                {post.comments.map((comment, _id) => (
+                  <div key={_id} className="border-b py-2">
+                    <strong>{comment.username}:</strong> {comment.text}
+                  </div>
                 ))}
               </div>
             )}

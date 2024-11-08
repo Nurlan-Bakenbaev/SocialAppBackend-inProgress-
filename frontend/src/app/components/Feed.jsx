@@ -15,13 +15,7 @@ const Feed = ({ feedType }) => {
     }
   };
   const POST_ENDPOINT = getPostEndPoint();
-  const {
-    data: postData,
-    isLoading,
-    error,
-    refetch,
-    isRefetching,
-  } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
       try {
@@ -46,17 +40,16 @@ const Feed = ({ feedType }) => {
   useEffect(() => {
     refetch();
   }, [feedType, refetch]);
+  if (error) {
+    return <p className="text-red-500">Posts not found</p>;
+  }
   return (
     <div>
       <h2 className="text-xl  my-4">
         {feedType === "latest" ? "Latest Posts" : "Following posts"}
       </h2>
-      {error && <p className="text-red-500">Post not found</p>}
-      {!postData || isRefetching ? (
-        <PostsSkeleton />
-      ) : (
-        <Posts postData={postData} />
-      )}
+
+      {!data || isRefetching ? <PostsSkeleton /> : <Posts postData={data} />}
     </div>
   );
 };

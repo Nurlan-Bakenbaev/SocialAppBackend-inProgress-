@@ -8,6 +8,7 @@ import { populate } from "dotenv";
 export const createPost = async (req, res) => {
   const { text } = req.body;
   let { img } = req.body;
+  console.log(req.body);
   const userId = req.user._id.toString();
   try {
     const user = await User.findById(userId);

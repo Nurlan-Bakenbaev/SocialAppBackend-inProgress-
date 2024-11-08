@@ -8,11 +8,9 @@ import Loading from "./components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Feed from "./components/Feed";
-
 const Home = () => {
   const [feedType, setFeedType] = useState("latest");
   const router = useRouter();
-
   const {
     data: authUser,
     isLoading: loading,
@@ -37,13 +35,11 @@ const Home = () => {
       }
     },
   });
-
   useEffect(() => {
     if (!loading && !authUser) {
       router.push("/login");
     }
   }, [authUser, loading, router]);
-
   return (
     <div className="flex flex-wrap md:flex-row sm:w-full md:w-[80%] gap-3 mx-auto justify-center">
       <div className="flex gap-3 flex-col">
