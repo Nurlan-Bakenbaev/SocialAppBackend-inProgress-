@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["img.freepik.com"], // Allow images from this domain
+    domains: ["img.freepik.com", "res.cloudinary.com"],
   },
 };
 

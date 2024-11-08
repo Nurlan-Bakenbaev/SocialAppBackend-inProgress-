@@ -11,8 +11,8 @@ const UserInfo = () => {
   console.log(user);
   if (isLoading) return <UserInfoSkeleton />;
   return (
-    <div className="border bg-base-100 shadow-md rounded-lg p-4 w-full sm:max-w-[320px] lg:max-w-xl mx-auto">
-      <div className="flex flex-col sm:flex-row items-center mb-3">
+    <div className="border bg-base-100 shadow-md rounded-lg p-4 w-full min-w-[280px] lg:max-w-xl mx-auto">
+      <div className="flex flex-col sm:flex-row items-center mb-3 ">
         <Image
           width={40}
           height={40}

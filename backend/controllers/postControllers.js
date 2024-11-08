@@ -3,12 +3,11 @@ import Post from "../models/postModel.js";
 import Notification from "../models/Notification.js";
 import { v2 as cloudinary } from "cloudinary";
 import { populate } from "dotenv";
-
 // Create a new post
 export const createPost = async (req, res) => {
   const { text } = req.body;
   let { img } = req.body;
-  console.log(req.body);
+ 
   const userId = req.user._id.toString();
   try {
     const user = await User.findById(userId);

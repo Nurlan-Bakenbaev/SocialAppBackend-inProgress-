@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaImages } from "react-icons/fa";
-
 const CreatePost = () => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
@@ -22,18 +21,17 @@ const CreatePost = () => {
       reader.readAsDataURL(selectedFile);
     }
   };
-
   const handlePostChange = (e) => {
     setText(e.target.value);
   };
-
   const {
     mutate: createPost,
     isError,
     error,
-    isLoading,
+
+    isPending,
   } = useMutation({
-    mutationFn: async ({ img, text }) => {
+    mutationFn: async ({ preview: img, text }) => {
       try {
         const res = await fetch("http://localhost:8000/api/posts/create", {
           method: "POST",
@@ -46,6 +44,8 @@ const CreatePost = () => {
         if (!res.ok) {
           const errorData = await res.json();
           console.log(errorData.error);
+          toast.error(errorData.error);
+
           throw new Error(errorData.error);
         }
         return await res.json();
@@ -54,19 +54,16 @@ const CreatePost = () => {
       }
     },
     onSuccess: () => {
+      setPreview(null);
       setImg(null);
       setText("");
       toast.success("Post created successfully!");
       queryClient.invalidateQueries(["posts"]);
     },
-    onError: () => {
-      toast.error(error?.error || "Failed to create post");
-    },
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    createPost({ img, text });
+    createPost({ preview, text });
   };
   useEffect(() => {
     return () => {
@@ -75,9 +72,10 @@ const CreatePost = () => {
       }
     };
   }, [preview]);
-  return (
+    return (
+      
     <div className="border p-4 shadow-md">
-      <form onSubmit={handleSubmit} className="w-full rounded-md">
+      <form onSubmit={handleSubmit} className=" min-w-[320px] rounded-md">
         <div className="relative border">
           <input
             onChange={handlePostChange}
@@ -92,7 +90,7 @@ const CreatePost = () => {
             className="absolute text-white px-7 right-0 btn bg-gradient-to-tr
              from-purple-500 to-orange-500 transition-all ease-out duration-500 
              hover:bg-gradient-to-tl hover:scale-105">
-            {isLoading ? "Posting" : "Post"}
+            {isPending ? "Posting" : "Post"}
           </button>
         </div>
         <label

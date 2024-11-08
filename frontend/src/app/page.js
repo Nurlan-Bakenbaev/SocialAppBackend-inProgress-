@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import CreatePost from "./components/CreatePost";
-import Posts from "./components/Posts";
 import FollowingCard from "./components/FollowingCard";
 import UserInfo from "./components/UserInfo";
 import Loading from "./components/Loading";
@@ -41,16 +40,15 @@ const Home = () => {
     }
   }, [authUser, loading, router]);
   return (
-    <div className="flex flex-wrap md:flex-row sm:w-full md:w-[80%] gap-3 mx-auto justify-center">
-      <div className="flex gap-3 flex-col">
+    <div className="flex flex-wrap md:flex-row w-full md:w-[80%] gap-2 mx-auto justify-center">
+      <div className="flex  flex-col gap-4 ">
         <UserInfo />
-        <div className="flex flex-col mt-5">
-          <p className="text-center">Interesting People:</p>
+        <div>
           <FollowingCard />
         </div>
       </div>
       {loading && <Loading />}
-      <div className="flex flex-col min-w-[320px]">
+      <div className="flex flex-col min-">
         <CreatePost />
         <div className="flex items-center mt-2 justify-between p-4 ">
           <p onClick={() => setFeedType("latest")} className="btn">
