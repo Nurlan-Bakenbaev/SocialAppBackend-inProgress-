@@ -72,10 +72,9 @@ const CreatePost = () => {
       }
     };
   }, [preview]);
-    return (
-      
+  return (
     <div className="border p-4 shadow-md">
-      <form onSubmit={handleSubmit} className=" min-w-[320px] rounded-md">
+      <form onSubmit={handleSubmit} className="rounded-md">
         <div className="relative border">
           <input
             onChange={handlePostChange}
@@ -88,7 +87,7 @@ const CreatePost = () => {
           <button
             type="submit"
             className="absolute text-white px-7 right-0 btn bg-gradient-to-tr
-             from-purple-500 to-orange-500 transition-all ease-out duration-500 
+             from-purple-500 to-orange-500 transition-all  ease-in-out duration-700 
              hover:bg-gradient-to-tl hover:scale-105">
             {isPending ? "Posting" : "Post"}
           </button>

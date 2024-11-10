@@ -40,8 +40,8 @@ const Home = () => {
     }
   }, [authUser, loading, router]);
   return (
-    <div className="flex flex-wrap md:flex-row w-full md:w-[80%] gap-2 mx-auto justify-center">
-      <div className="flex  flex-col gap-4 ">
+    <div className="px-2 flex flex-row w-full gap-2 mx-auto justify-center">
+      <div className=" hidden md:flex flex-col gap-4 ">
         <UserInfo />
         <div>
           <FollowingCard />

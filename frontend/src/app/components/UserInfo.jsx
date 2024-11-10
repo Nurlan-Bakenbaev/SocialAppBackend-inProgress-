@@ -29,14 +29,16 @@ const UserInfo = () => {
       <div className="flex flex-wrap justify-center sm:justify-start">
         <div className="flex items-center mb-1 mr-2">
           <FaPen className="text-gray-600 mr-1" />
-          <span className="text-sm">{user?.posts || 0} Posts</span>
+          <span className="text-sm">{user?.followers.length} Followers </span>
         </div>
         <div className="flex items-center mb-1 mr-2">
-          <FaUsers className="text-gray-600 mr-1" />
-          <span className="text-sm">{user?.followers || 0} Followers</span>
+          <FaUsers color="blue" className=" mr-1" />
+          <span className="text-sm ">
+            {user?.following.length || 0} Following
+          </span>
         </div>
         <div className="flex items-center mb-1">
-          <FaEnvelope className="text-gray-600 mr-1" />
+          <FaEnvelope color="red" className="text-gray-600 mr-1" />
           <span className="text-sm">{user?.email}</span>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const UserCard = ({ userLogo, date, username, id }) => {
+const UserCard = ({ userLogo, date, username, id, fullname }) => {
   return (
     <div>
       <Link href={`/userpage/${id}`}>
@@ -14,7 +14,10 @@ const UserCard = ({ userLogo, date, username, id }) => {
             />
           </div>
           <div>
-            <h4 className="font-semibold">{username}</h4>
+            <div>
+              <p className="font-bold"> @{username}</p>
+              <p className="text-gray-400"> {fullname}</p>
+            </div>
             <span className="text-gray-500 text-sm">{date}</span>
           </div>
         </div>
