@@ -2,12 +2,12 @@ import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 import Notification from "../models/Notification.js";
 import { v2 as cloudinary } from "cloudinary";
-import { populate } from "dotenv";
+
 // Create a new post
 export const createPost = async (req, res) => {
   const { text } = req.body;
   let { img } = req.body;
- 
+
   const userId = req.user._id.toString();
   try {
     const user = await User.findById(userId);
@@ -143,6 +143,7 @@ export const commentOnPost = async (req, res) => {
     const { text } = req.body;
     const postId = req.params.id;
     const userId = req.user._id;
+    console.log(text, postId, userId);
     if (!text) {
       return res.status(400).json({ error: "Comment text is required" });
     }
@@ -156,6 +157,41 @@ export const commentOnPost = async (req, res) => {
     return res.status(200).json({ status: "success", comments: post.comments });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+export const deletedComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { postId } = req.params;
+    const userId = req.user._id;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Comment Not Found" });
+    }
+    const commentIndex = post.comments.findIndex(
+      (comment) => comment._id  === commentId
+    );
+    if (commentIndex === -1) {
+      return res.status(404).json({ error: "Comment Not Found" });
+    }
+
+    console.log(commentIndex);
+    const userHasCommentedOnPost = post.comments[commentIndex].user === userId;
+
+    if (!userHasCommentedOnPost) {
+      return res
+        .status(401)
+        .json({ error: "You are not authorized to delete this comment" });
+    }
+
+    post.comments.splice(commentIndex, 1);
+
+    await post.save();
+
+    return res.status(200).json({ status: "success", comments: post.comments });
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    return res.status(500).json({ error: error.message });
   }
 };
 

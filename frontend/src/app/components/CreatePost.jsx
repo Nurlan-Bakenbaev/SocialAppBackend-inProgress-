@@ -28,8 +28,7 @@ const CreatePost = () => {
     mutate: createPost,
     isError,
     error,
-
-    isPending,
+    isPending: IsCreatingPost,
   } = useMutation({
     mutationFn: async ({ preview: img, text }) => {
       try {
@@ -89,7 +88,7 @@ const CreatePost = () => {
             className="absolute text-white px-7 right-0 btn bg-gradient-to-tr
              from-purple-500 to-orange-500 transition-all  ease-in-out duration-700 
              hover:bg-gradient-to-tl hover:scale-105">
-            {isPending ? "Posting" : "Post"}
+            {IsCreatingPost ? "Posting" : "Post"}
           </button>
         </div>
         <label

@@ -8,10 +8,10 @@ import { timeAgo } from "@/app/components/helpers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CiEdit } from "react-icons/ci";
 import Loading from "./Loading";
+import CommentDialog from "./commentDialog";
 const Posts = ({ postData: { data } }) => {
   const [visiblePostIndex, setVisiblePostIndex] = useState(null);
-  const [userliked, setUserLiked] = useState(false);
-
+  const [showComments, setShowComments] = useState(false);
   //TAN STACK
   const queryClient = useQueryClient();
   const authUser = queryClient.getQueryData(["authUser"]);
@@ -19,8 +19,41 @@ const Posts = ({ postData: { data } }) => {
   const toggleComments = (index) => {
     setVisiblePostIndex((prevIndex) => (prevIndex === index ? null : index));
   };
-  const handleLikedPost = () => {
-    setUserLiked((prevState) => !prevState);
+
+  const {
+    mutate: likeUnLike,
+    isPending: isLiking,
+    error,
+  } = useMutation({
+    mutationFn: async (postId) => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/posts/like/${postId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        if (!res.ok) {
+          throw new Error(data.error);
+        }
+        const data = await res.json();
+        return data;
+      } catch (error) {
+        toast.error(error.error);
+        throw new Error(error);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    },
+  });
+  const handleLikedPost = (postId) => {
+    likeUnLike(postId);
   };
 
   const { mutate: deletePost, isPending } = useMutation({
@@ -95,7 +128,9 @@ const Posts = ({ postData: { data } }) => {
                 }}>
                 <FaHeart
                   className={`${
-                    userliked ? "text-red-500" : "text-red-200"
+                    authUser?.likedPosts.includes(post._id)
+                      ? "text-red-500"
+                      : "text-red-200"
                   }  mr-1`}
                 />
               </button>
@@ -105,7 +140,18 @@ const Posts = ({ postData: { data } }) => {
               className="flex items-center cursor-pointer"
               onClick={() => toggleComments(data.indexOf(post))}>
               <FaRegComment className="text-gray-500 mr-1" />
-              <span>{post.comments?.length || 0} Comments</span>
+              <button onClick={() => setShowComments(true)}>
+                {post?.comments?.length || 0} Comments
+              </button>
+              <div>
+                {showComments && (
+                  <CommentDialog
+                    postId={post._id}
+                    postComments={post.comments}
+                    onClose={() => setShowComments(false)}
+                  />
+                )}
+              </div>
             </div>
             {post?.user?._id === authUser?._id && (
               <>
@@ -120,16 +166,6 @@ const Posts = ({ postData: { data } }) => {
               </>
             )}
           </div>
-          {visiblePostIndex === data.indexOf(post) &&
-            post.comments?.length > 0 && (
-              <div className="mt-4">
-                {post.comments.map((comment, _id) => (
-                  <div key={_id} className="border-b py-2">
-                    <strong>{comment.username}:</strong> {comment.text}
-                  </div>
-                ))}
-              </div>
-            )}
         </div>
       ))}
     </div>

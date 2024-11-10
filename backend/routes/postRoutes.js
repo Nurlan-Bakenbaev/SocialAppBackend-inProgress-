@@ -3,6 +3,7 @@ import protectedRoute from "../middleware/protectedRoute.js";
 import {
   commentOnPost,
   createPost,
+  deletedComment,
   deletePost,
   getAllikedPosts,
   getAllPosts,
@@ -21,3 +22,6 @@ postRoutes.post("/create", protectedRoute, createPost);
 postRoutes.post("/like/:id", protectedRoute, likeUnlikePost);
 postRoutes.post("/comment/:id", protectedRoute, commentOnPost);
 postRoutes.delete("/delete/:id", protectedRoute, deletePost);
+
+postRoutes.delete("/comment/:postId/:id", protectedRoute, deletedComment);
+
