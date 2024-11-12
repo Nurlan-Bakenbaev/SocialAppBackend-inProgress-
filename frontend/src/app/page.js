@@ -33,6 +33,7 @@ const Home = () => {
         throw new Error(error.message);
       }
     },
+    cacheTime: 1000 * 60 * 100,
   });
   useEffect(() => {
     if (!loading && !authUser) {

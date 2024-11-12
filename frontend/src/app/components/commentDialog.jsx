@@ -48,40 +48,45 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
   const handleSubmit = () => {
     handleComment(comment);
   };
-  const {
-    mutate: deleteComment,
-    isPending: isDeleting,
-    error: commentDeletingError,
-  } = useMutation({
-    mutationFn: async ({ postId, commentId }) => {
-      try {
-        const res = await fetch(
-          `http://localhost:8000/api/posts/comment/${postId}/${commentId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-        if (!res.ok) {
-          throw new Error("Failed to delete comment");
-        }
-        const data = await res.json();
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.error("Error deleting comment:", error);
-        throw error;
-      }
+  console.log(postComments);
+  const comments = [
+    {
+      _id: "1",
+      user: "JohnDoe",
+      userId: "12345",
+      text: "This is a great post! Thanks for sharing.",
     },
-    onSuccess: () => {
-      toast.success("Comment deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    {
+      _id: "2",
+      user: "JaneSmith",
+      userId: "67890",
+      text: "I completely agree with this!",
     },
-  });
-
+    {
+      _id: "3",
+      user: "AliceJohnson",
+      userId: "24680",
+      text: "Interesting perspective, I hadn't thought of it this way.",
+    },
+    {
+      _id: "4",
+      user: "AliceJohnson",
+      userId: "24680",
+      text: "Interesting perspective, I hadn't thought of it this way.",
+    },
+    {
+      _id: "5",
+      user: "AliceJohnson",
+      userId: "24680",
+      text: "Interesting perspective, I hadn't thought of it this way.",
+    },
+    {
+      _id: "6",
+      user: "AliceJohnson",
+      userId: "24680",
+      text: "Interesting perspective, I hadn't thought of it this way.",
+    },
+  ];
   return (
     <div className="modal modal-open">
       <div className="absolute modal-box h-[480px]">
@@ -93,8 +98,8 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
         </button>
         <h3 className="text-lg font-bold mb-4">Comments</h3>
         <div className="overflow-y-auto max-h-[340px] p-2">
-          {postComments?.map(({ _id, text, user }) => (
-            <div key={_id} className="border-b border-gray-200 py-2">
+          {postComments?.map(({ _id, text, user }, index) => (
+            <div key={index} className="border-b border-gray-200 py-2">
               <div className="flex flex-row gap-2">
                 <Image
                   width={30}
@@ -109,16 +114,7 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
                   <p className="text-xs text-gray-400">username: @{user._id}</p>
                 </div>
               </div>
-              <div className="flex  justify-between items-center">
-                <p className="mt-1 text-gray-700">{text}</p>
-                <button
-                  className="text-red-500"
-                  onClick={() =>
-                    deleteComment({ postId: postId, commentId: _id })
-                  }>
-                  delete
-                </button>
-              </div>
+              <p className="mt-1 text-gray-700">{text}</p>
             </div>
           ))}
         </div>

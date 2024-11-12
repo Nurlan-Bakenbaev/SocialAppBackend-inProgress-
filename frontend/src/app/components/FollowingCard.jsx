@@ -43,40 +43,41 @@ const FollowingCard = ({ user }) => {
             <FollowindSkeletone />
           </div>
         )}
-        {suggestedUsers?.data.map((user) => (
-          <div
-            className=" flex flex-row hover:bg-slate-100 
+        {suggestedUsers?.data &&
+          suggestedUsers?.data?.map((user) => (
+            <div
+              className=" flex flex-row hover:bg-slate-100 
             items-center justify-between gap-4 border-b
              p-4 rounded-md"
-            key={user._id}>
-            <div>
-              <Image
-                width={30}
-                height={30}
-                src={user?.profilePicture || "/userPlaceholder.png"}
-                alt="User Logo"
-                className="rounded-full mr-3"
-              />
+              key={user._id}>
               <div>
-                <h4 className="font-semibold">
-                  {user?.fullname || "Default Name"}
-                </h4>
-                <p className="text-gray-500">
-                  @{user?.username || "default username"}
-                </p>
+                <Image
+                  width={30}
+                  height={30}
+                  src={user?.profilePicture || "/userPlaceholder.png"}
+                  alt="User Logo"
+                  className="rounded-full mr-3"
+                />
+                <div>
+                  <h4 className="font-semibold">
+                    {user?.fullname || "Default Name"}
+                  </h4>
+                  <p className="text-gray-500">
+                    @{user?.username || "default username"}
+                  </p>
+                </div>
               </div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault(), followUnFollow(user._id);
+                }}
+                className="flex items-center bg-gradient-to-r from-purple-400 to-orange-400 text-white rounded py-1 px-3 hover:bg-blue-700 transition-colors"
+                aria-label={`Follow ${user?.fullName || "User Name"}`}>
+                <FaUserPlus className="mr-1" />
+                {isLoading ? "Loading..." : "Follow"}
+              </button>
             </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault(), followUnFollow(user._id);
-              }}
-              className="flex items-center bg-gradient-to-r from-purple-400 to-orange-400 text-white rounded py-1 px-3 hover:bg-blue-700 transition-colors"
-              aria-label={`Follow ${user?.fullName || "User Name"}`}>
-              <FaUserPlus className="mr-1" />
-              {isLoading ? "Loading..." : "Follow"}
-            </button>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

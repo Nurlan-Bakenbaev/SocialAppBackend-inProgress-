@@ -8,7 +8,8 @@ import Image from "next/image";
 
 const UserInfo = () => {
   const { data: user, isLoading } = useQuery({ queryKey: ["authUser"] });
-  console.log(user);
+  
+  
   if (isLoading) return <UserInfoSkeleton />;
   return (
     <div className="border bg-base-100 shadow-md rounded-lg p-4 w-full min-w-[280px] lg:max-w-xl mx-auto">
