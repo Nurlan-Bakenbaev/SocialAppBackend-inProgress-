@@ -33,7 +33,7 @@ const Home = () => {
         throw new Error(error.message);
       }
     },
-    cacheTime: 1000 * 60 * 100,
+    staleTime: 1000 * 60 * 100,
   });
   useEffect(() => {
     if (!loading && !authUser) {
@@ -41,17 +41,21 @@ const Home = () => {
     }
   }, [authUser, loading, router]);
   return (
-    <div className="px-2 flex flex-row w-full gap-2 mx-auto justify-center">
+    <div
+      className="px-2 flex 
+    flex-row 
+    w-full gap-2 mx-auto
+     justify-center">
       <div className=" hidden md:flex flex-col gap-4 ">
         <UserInfo />
         <div>
           <FollowingCard />
         </div>
       </div>
-      {loading && <Loading />}
-      <div className="flex flex-col min-">
+
+      <div className="flex flex-col">
         <CreatePost />
-        <div className="flex items-center mt-2 justify-between p-4 ">
+        <div className="flex mt-4 items-center gap-4 justify-between">
           <p onClick={() => setFeedType("latest")} className="btn">
             Latest Posts
           </p>
