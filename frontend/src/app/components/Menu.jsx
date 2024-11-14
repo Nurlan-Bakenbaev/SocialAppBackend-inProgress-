@@ -35,7 +35,7 @@ const Menu = () => {
         />
 
         <Link
-          href="/likes"
+          href="/likedposts"
           className="flex flex-col items-center text-gray-600 hover:text-blue-500">
           <FaHeart size={24} />
           <span className="text-xs">Likes</span>

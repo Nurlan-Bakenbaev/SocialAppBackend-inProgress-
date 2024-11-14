@@ -7,6 +7,7 @@ import { AiOutlineClose } from "react-icons/ai";
 const CommentDialog = ({ onClose, postId, postComments }) => {
   const [comment, setComment] = useState("");
   const queryClient = useQueryClient();
+  console.log(postComments);
   const {
     mutate: handleComment,
     isPending,
@@ -48,45 +49,6 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
   const handleSubmit = () => {
     handleComment(comment);
   };
-  console.log(postComments);
-  const comments = [
-    {
-      _id: "1",
-      user: "JohnDoe",
-      userId: "12345",
-      text: "This is a great post! Thanks for sharing.",
-    },
-    {
-      _id: "2",
-      user: "JaneSmith",
-      userId: "67890",
-      text: "I completely agree with this!",
-    },
-    {
-      _id: "3",
-      user: "AliceJohnson",
-      userId: "24680",
-      text: "Interesting perspective, I hadn't thought of it this way.",
-    },
-    {
-      _id: "4",
-      user: "AliceJohnson",
-      userId: "24680",
-      text: "Interesting perspective, I hadn't thought of it this way.",
-    },
-    {
-      _id: "5",
-      user: "AliceJohnson",
-      userId: "24680",
-      text: "Interesting perspective, I hadn't thought of it this way.",
-    },
-    {
-      _id: "6",
-      user: "AliceJohnson",
-      userId: "24680",
-      text: "Interesting perspective, I hadn't thought of it this way.",
-    },
-  ];
   return (
     <div className="modal modal-open">
       <div className="absolute modal-box h-[480px]">
@@ -101,17 +63,16 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
           {postComments?.map(({ _id, text, user }, index) => (
             <div key={index} className="border-b border-gray-200 py-2">
               <div className="flex flex-row gap-2">
-                <Image
-                  width={30}
-                  height={30}
-                  src={user?.profileImg || "/userPlaceholder.png"}
+                <img
+                  className="w-[30px] h-[30px]"
+                  src={user.profileImg || "/userPlaceholder.png"}
                   alt="user-image"
                 />
                 <div>
                   <p className="text-sm font-semibold text-gray-600">
-                    {user.username}
+                    {user.fullname}
                   </p>
-                  <p className="text-xs text-gray-400">username: @{user._id}</p>
+                  <p className="text-xs text-gray-400">@{user.username}</p>
                 </div>
               </div>
               <p className="mt-1 text-gray-700">{text}</p>

@@ -21,11 +21,17 @@ export const createPost = async (req, res) => {
       const uploadedResponse = await cloudinary.uploader.upload(img);
       img = uploadedResponse.secure_url.toString();
     }
-    const newPost = new Post({
+    const newPost = await Post.create({
       text,
       img,
       user: userId,
     });
+
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { posts: newPost._id } },
+      { new: true }
+    );
     await newPost.save();
     res.status(201).json({ status: "success", data: newPost });
   } catch (error) {
@@ -89,9 +95,9 @@ export const getAllikedPosts = async (req, res) => {
       .populate("user")
       .populate("comments.user");
     if (likedPosts.length === 0) {
-      return res.status(200).json({ message: "No liked posts found" });
+      return res.status(400).json({ message: "No liked posts found" });
     }
-    res.status(200).json(likedPosts);
+    res.status(200).json({ data: likedPosts });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

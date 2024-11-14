@@ -72,7 +72,7 @@ const CreatePost = () => {
     };
   }, [preview]);
   return (
-    <div className="border p-2 w-[320px] lg:w-[480px] shadow-md">
+    <div className="border p-2 min-w-[320px] lg:w-full shadow-md">
       <form onSubmit={handleSubmit} className="rounded-md">
         <div className="relative border">
           <input
@@ -81,7 +81,7 @@ const CreatePost = () => {
             name="text"
             type="text"
             placeholder="Share something"
-            className="input shadow-md focus:outline-none"
+            className="input border-none focus:outline-none"
           />
           <button
             type="submit"

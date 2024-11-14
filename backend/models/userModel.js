@@ -17,6 +17,12 @@ const userSchema = mongoose.Schema(
       required: [true, "Password is required"],
       minLength: [6, "Password must be at least 6 characters long"],
     },
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "post",default: []
+      },
+    ],
     //User has a followers
     followers: [
       { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },

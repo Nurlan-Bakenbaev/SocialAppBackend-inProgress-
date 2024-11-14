@@ -16,23 +16,25 @@ const UserInfo = () => {
     rounded-lg  w-full min-w-[280px] lg:max-w-xl mx-auto relative overflow-hidden">
       <img
         className="h-[80px] w-full opacity-85 absolute object-cover  "
-        src={user.coverImg}
+        src={user?.coverImg || "/colorful.jpeg"}
         alt="Cover-Image"
       />
-      <div className="p-2">
-        <div className="flex  flex-col sm:flex-row items-center mb-3 text-orange-300 relative z-20 ">
+      <div className="p-2 ">
+        <Link
+          href={"/profile"}
+          className="flex  flex-col sm:flex-row items-center mb-3 text-white relative z-20 ">
           <Image
             width={40}
             height={40}
             src={user?.profileImg || "/userPlaceholder.png"}
             alt="User Profile"
-            className="w-16 h-16 rounded-full mx-2"
+            className="w-16 h-16 object-cover rounded-full mx-2"
           />
-          <div className="text-center sm:text-left">
+          <div className="text-center sm:text-left bg-slate-600 bg-opacity-60 px-4">
             <h2 className="text-lg font-semibold">{user?.fullname}</h2>
             <p className="text-sm">@{user?.username}</p>
           </div>
-        </div>
+        </Link>
 
         <div className="flex flex-wrap justify-center sm:justify-start">
           <div className="flex items-center mb-1 mr-2">
@@ -58,14 +60,13 @@ const UserInfo = () => {
 
         <h3 className="font-semibold text-sm mt-3">Links:</h3>
         <ul className="list-disc pl-5 mb-3">
-          {user?.links ? (
-            user?.links?.map((link, index) => (
-              <li key={index} className="text-blue-500 text-sm hover:underline">
-                <Link href={link} target="_blank" rel="noopener noreferrer">
-                  {link}
-                </Link>
-              </li>
-            ))
+          {user?.link ? (
+            <Link
+              className=" text-gray-700 text-sm"
+              href={user.link}
+              target="_blank">
+              {user.link}
+            </Link>
           ) : (
             <p className="w-full text-gray-700 text-sm"> No links available</p>
           )}

@@ -33,7 +33,7 @@ const FollowingCard = ({ user }) => {
   }
 
   return (
-    <div className="flex border flex-row gap-5 items-center w-full justify-between shadow-md rounded-lg p-4">
+    <div className="flex border flex-row  shadow-md rounded-lg p-4">
       <div>
         <p className="text-center">Interesting People:</p>
         {isLoading && (
@@ -50,22 +50,20 @@ const FollowingCard = ({ user }) => {
             items-center justify-between gap-4 border-b
              p-4 rounded-md"
               key={user._id}>
+              <Image
+                width={30}
+                height={30}
+                src={user?.profileImg || "/userPlaceholder.png"}
+                alt="User Logo"
+                className="w-[30px] h-[30px] rounded-full object-cover mr-3"
+              />
               <div>
-                <Image
-                  width={30}
-                  height={30}
-                  src={user?.profilePicture || "/userPlaceholder.png"}
-                  alt="User Logo"
-                  className="rounded-full mr-3"
-                />
-                <div>
-                  <h4 className="font-semibold">
-                    {user?.fullname || "Default Name"}
-                  </h4>
-                  <p className="text-gray-500">
-                    @{user?.username || "default username"}
-                  </p>
-                </div>
+                <h4 className="font-semibold">
+                  {user?.fullname || "Default Name"}
+                </h4>
+                <p className="text-gray-500">
+                  @{user?.username || "default username"}
+                </p>
               </div>
               <button
                 onClick={(e) => {

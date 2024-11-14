@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CiEdit } from "react-icons/ci";
 import Loading from "./Loading";
 import CommentDialog from "./commentDialog";
+
 const Posts = ({ postData: { data } }) => {
   const [visiblePostIndex, setVisiblePostIndex] = useState(null);
   const [showComments, setShowComments] = useState(false);
@@ -91,25 +92,27 @@ const Posts = ({ postData: { data } }) => {
   return (
     <div>
       {isPending && <Loading />}
-      {data?.map((post) => (
+      {data.map((post) => (
         <div
           key={post._id}
           className="shadow-md border 
         rounded-lg p-3 mt-4">
-          <UserCard
-            userLogo={post.user.profileImg}
-            date={post.user.date}
-            username={post.user.username}
-            fullname={post.user.fullname}
-            id={post.user._id}
-          />
+          {post.user && (
+            <UserCard
+              userLogo={post?.user?.profileImg || "/userPlaceholder.png"}
+              date={post?.user?.date}
+              username={post?.user?.username}
+              fullname={post?.user?.fullname}
+              id={post.user?._id}
+            />
+          )}
           <p className="text-gray-400 text-sm">
             Created: {timeAgo(post.createdAt)}
           </p>
           <div>
             {post?.img && (
               <Image
-                src={post.img}
+                src={post?.img}
                 alt="Post"
                 width={600}
                 height={400}

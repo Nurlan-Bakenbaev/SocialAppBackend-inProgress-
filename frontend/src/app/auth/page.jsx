@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-
 const SignUp = () => {
   const [userData, setUserData] = useState({
     fullname: "",
@@ -11,11 +10,9 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
   const { mutate, isError, isLoading, error } = useMutation({
     mutationFn: async (userData) => {
       const res = await fetch("http://localhost:8000/api/auth/signup", {
@@ -25,17 +22,15 @@ const SignUp = () => {
         },
         body: JSON.stringify(userData),
       });
-
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error);
       }
-
       const data = await res.json();
       if (data.error) {
-        throw new Error(data.error || "Something wrong");
+        console.log(data.error);
+        throw new Error(data.error);
       }
-
       return data;
     },
     onSuccess: () => {
@@ -44,13 +39,14 @@ const SignUp = () => {
         window.location.href = "/login";
       }, 2000);
     },
+    onError: (error) => {
+      toast.error(error.error || "Failed to create user");
+    },
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(userData);
   };
-
   return (
     <div className="flex items-center justify-center ">
       <fieldset className="w-full max-w-md p-5 shadow-lg rounded-lg ">
@@ -122,7 +118,7 @@ const SignUp = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`btn text-white font-bold w-full py-2 rounded-lg transition-all duration-300 ${
+            className={`btn text-white mt-3 font-bold w-full py-2 rounded-lg transition-all duration-300 ${
               isLoading
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-gradient-to-tr from-purple-500 to-orange-500 hover:bg-gradient-to-tl hover:scale-105"

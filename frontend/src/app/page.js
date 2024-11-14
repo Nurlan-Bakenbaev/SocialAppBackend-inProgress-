@@ -48,7 +48,7 @@ const Home = () => {
      justify-center">
       <div className=" hidden md:flex flex-col gap-4 ">
         <UserInfo />
-        <div>
+        <div >
           <FollowingCard />
         </div>
       </div>
