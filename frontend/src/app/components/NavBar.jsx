@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { FaRegBell } from 'react-icons/fa';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import NotificationDialog from './NotificationDialog';
 const NavBar = () => {
   const pathname = usePathname();
   const { data: user } = useQuery({ queryKey: ['authUser'] });
@@ -67,9 +68,7 @@ const NavBar = () => {
               Logout
             </button>
           )}
-          <Link className="m-5  hover:scale-105 hover:text-blue-500" href={'/notify'}>
-            <FaRegBell fontSize={18} />
-          </Link>
+          <NotificationDialog />
         </ul>
       </nav>
     </div>

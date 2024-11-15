@@ -1,28 +1,28 @@
-"use client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import { FaUserPlus } from "react-icons/fa";
-import FollowindSkeletone from "./Skeleton/FollowindSkeletone";
-import useFollow from "@/hooks/useFollow";
+'use client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import { FaUserPlus } from 'react-icons/fa';
+import FollowindSkeletone from './Skeleton/FollowindSkeletone';
+import useFollow from '@/hooks/useFollow';
 
 const FollowingCard = ({ user }) => {
   const queryClient = useQueryClient();
-  const authUser = queryClient.getQueryData(["authUser"]);
+  const authUser = queryClient.getQueryData(['authUser']);
 
   const { data: suggestedUsers, isLoading } = useQuery({
-    queryKey: ["suggestedUsers"],
+    queryKey: ['suggestedUsers'],
     queryFn: async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/users/suggested", {
-          method: "GET",
+        const res = await fetch('http://localhost:8000/api/users/suggested', {
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          credentials: "include",
+          credentials: 'include',
         });
         return await res.json();
       } catch (error) {
-        throw new Error(error || "Failed to fetch");
+        throw new Error(error || 'Failed to fetch');
       }
     },
   });
@@ -33,7 +33,7 @@ const FollowingCard = ({ user }) => {
   }
 
   return (
-    <div className="flex border flex-row  shadow-md rounded-lg p-4">
+    <div className="flex border min-w-[280px] flex-row  shadow-md rounded-lg p-4">
       <div>
         <p className="text-center">Interesting People:</p>
         {isLoading && (
@@ -47,22 +47,23 @@ const FollowingCard = ({ user }) => {
           suggestedUsers?.data?.map((user) => (
             <div
               className=" flex flex-row hover:bg-slate-100 
-            items-center justify-between gap-4 border-b
+            items-center justify-between gap-1 border-b
              p-4 rounded-md"
-              key={user._id}>
+              key={user._id}
+            >
               <Image
                 width={30}
                 height={30}
-                src={user?.profileImg || "/userPlaceholder.png"}
+                src={user?.profileImg || '/userPlaceholder.png'}
                 alt="User Logo"
-                className="w-[30px] h-[30px] rounded-full object-cover mr-3"
+                className="w-[30px] h-[30px] rounded-full object-cover "
               />
               <div>
                 <h4 className="font-semibold">
-                  {user?.fullname || "Default Name"}
+                  {user?.fullname || 'Default Name'}
                 </h4>
                 <p className="text-gray-500">
-                  @{user?.username || "default username"}
+                  @{user?.username || 'default username'}
                 </p>
               </div>
               <button
@@ -70,9 +71,10 @@ const FollowingCard = ({ user }) => {
                   e.preventDefault(), followUnFollow(user._id);
                 }}
                 className="flex items-center bg-gradient-to-r from-purple-400 to-orange-400 text-white rounded py-1 px-3 hover:bg-blue-700 transition-colors"
-                aria-label={`Follow ${user?.fullName || "User Name"}`}>
+                aria-label={`Follow ${user?.fullName || 'User Name'}`}
+              >
                 <FaUserPlus className="mr-1" />
-                {isLoading ? "Loading..." : "Follow"}
+                {isLoading ? 'Loading...' : 'Follow'}
               </button>
             </div>
           ))}

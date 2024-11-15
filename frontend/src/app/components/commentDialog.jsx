@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import { AiOutlineClose } from "react-icons/ai";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const CommentDialog = ({ onClose, postId, postComments }) => {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const queryClient = useQueryClient();
   console.log(postComments);
   const {
@@ -15,32 +15,29 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
   } = useMutation({
     mutationFn: async (comment) => {
       try {
-        const res = await fetch(
-          `http://localhost:8000/api/posts/comment/${postId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ text: comment }),
-            credentials: "include",
-          }
-        );
+        const res = await fetch(`http://localhost:8000/api/posts/comment/${postId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: comment }),
+          credentials: 'include',
+        });
         if (!res.ok) {
-          throw new Error("Failed to create comment");
+          throw new Error('Failed to create comment');
         }
         const data = await res.json();
         console.log(data);
         return data;
       } catch (error) {
-        console.error("Error creating comment:", error);
+        console.error('Error creating comment:', error);
         throw error;
       }
     },
     onSuccess: () => {
-      toast.success("Comment posted successfully");
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      setComment("");
+      toast.success('Comment posted successfully');
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      setComment('');
     },
   });
   const handleCommentChange = (e) => {
@@ -55,7 +52,8 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
         <button
           className="absolute right-2 top-2 text-gray-400
            hover:text-gray-600"
-          onClick={onClose}>
+          onClick={onClose}
+        >
           <AiOutlineClose className="text-xl" />
         </button>
         <h3 className="text-lg font-bold mb-4">Comments</h3>
@@ -63,15 +61,9 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
           {postComments?.map(({ _id, text, user }, index) => (
             <div key={index} className="border-b border-gray-200 py-2">
               <div className="flex flex-row gap-2">
-                <img
-                  className="w-[30px] h-[30px]"
-                  src={user.profileImg || "/userPlaceholder.png"}
-                  alt="user-image"
-                />
+                <img className="w-[30px] h-[30px]" src={user.profileImg || '/userPlaceholder.png'} alt="user-image" />
                 <div>
-                  <p className="text-sm font-semibold text-gray-600">
-                    {user.fullname}
-                  </p>
+                  <p className="text-sm font-semibold text-gray-600">{user.fullname}</p>
                   <p className="text-xs text-gray-400">@{user.username}</p>
                 </div>
               </div>
@@ -89,7 +81,8 @@ const CommentDialog = ({ onClose, postId, postComments }) => {
           />
           <button
             onClick={() => handleSubmit(postId)}
-            className="btn text-white bg-gradient-to-tr from-purple-500 to-orange-500">
+            className="btn text-white bg-gradient-to-tr from-purple-500 to-orange-500"
+          >
             Comment
           </button>
         </div>

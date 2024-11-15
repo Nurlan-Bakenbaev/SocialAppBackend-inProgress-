@@ -1,21 +1,21 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
-import { FaRegComment, FaHeart } from "react-icons/fa";
-import UserCard from "./UserCard";
-import { MdDeleteOutline } from "react-icons/md";
-import { timeAgo } from "@/app/components/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CiEdit } from "react-icons/ci";
-import Loading from "./Loading";
-import CommentDialog from "./commentDialog";
+'use client';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { FaRegComment, FaHeart } from 'react-icons/fa';
+import UserCard from './UserCard';
+import { MdDeleteOutline } from 'react-icons/md';
+import { timeAgo } from '@/app/components/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CiEdit } from 'react-icons/ci';
+import Loading from './Loading';
+import CommentDialog from './commentDialog';
 
 const Posts = ({ postData: { data } }) => {
   const [visiblePostIndex, setVisiblePostIndex] = useState(null);
   const [showComments, setShowComments] = useState(false);
   //TAN STACK
   const queryClient = useQueryClient();
-  const authUser = queryClient.getQueryData(["authUser"]);
+  const authUser = queryClient.getQueryData(['authUser']);
 
   const toggleComments = (index) => {
     setVisiblePostIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -28,16 +28,13 @@ const Posts = ({ postData: { data } }) => {
   } = useMutation({
     mutationFn: async (postId) => {
       try {
-        const res = await fetch(
-          `http://localhost:8000/api/posts/like/${postId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const res = await fetch(`http://localhost:8000/api/posts/like/${postId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
         if (!res.ok) {
           throw new Error(data.error);
         }
@@ -49,8 +46,8 @@ const Posts = ({ postData: { data } }) => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['authUser'] });
     },
   });
   const handleLikedPost = (postId) => {
@@ -60,16 +57,13 @@ const Posts = ({ postData: { data } }) => {
   const { mutate: deletePost, isPending } = useMutation({
     mutationFn: async (postId) => {
       try {
-        const res = await fetch(
-          `http://localhost:8000/api/posts/delete/${postId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const res = await fetch(`http://localhost:8000/api/posts/delete/${postId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
         if (!res.ok) {
           throw new Error(data.error);
         }
@@ -79,8 +73,8 @@ const Posts = ({ postData: { data } }) => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      toast.success("Post deleted successfully!");
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      toast.success('Post deleted successfully!');
     },
   });
   const handleDeletePost = (postId) => {
@@ -96,11 +90,12 @@ const Posts = ({ postData: { data } }) => {
         <div
           key={post._id}
           className="shadow-md border 
-        rounded-lg p-3 mt-4">
+        rounded-lg p-3 mt-4"
+        >
           {post.user && (
             <div className="hover:bg-purple-50 p-2">
               <UserCard
-                userLogo={post?.user?.profileImg || "/userPlaceholder.png"}
+                userLogo={post?.user?.profileImg || '/userPlaceholder.png'}
                 date={post?.user?.date}
                 username={post?.user?.username}
                 fullname={post?.user?.fullname}
@@ -108,9 +103,7 @@ const Posts = ({ postData: { data } }) => {
               />
             </div>
           )}
-          <p className="text-gray-400 text-sm">
-            Created: {timeAgo(post.createdAt)}
-          </p>
+          <p className="text-gray-400 text-sm">Created: {timeAgo(post.createdAt)}</p>
           <div>
             {post?.img && (
               <Image
@@ -130,24 +123,17 @@ const Posts = ({ postData: { data } }) => {
               <button
                 onClick={(e) => {
                   e.preventDefault(), handleLikedPost(post._id);
-                }}>
+                }}
+              >
                 <FaHeart
-                  className={`${
-                    authUser?.likedPosts.includes(post._id)
-                      ? "text-red-500"
-                      : "text-red-200"
-                  }  mr-1`}
+                  className={`${authUser?.likedPosts.includes(post._id) ? 'text-red-500' : 'text-red-200'}  mr-1`}
                 />
               </button>
               <span>{post.likes.length} likes</span>
             </div>
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={() => toggleComments(data.indexOf(post))}>
+            <div className="flex items-center cursor-pointer" onClick={() => toggleComments(data.indexOf(post))}>
               <FaRegComment className="text-gray-500 mr-1" />
-              <button onClick={() => setShowComments(true)}>
-                {post?.comments?.length || 0} Comments
-              </button>
+              <button onClick={() => setShowComments(true)}>{post?.comments?.length || 0} Comments</button>
               <div>
                 {showComments && (
                   <CommentDialog
@@ -160,9 +146,7 @@ const Posts = ({ postData: { data } }) => {
             </div>
             {post?.user?._id === authUser?._id && (
               <>
-                <button
-                  onClick={() => handleDeletePost(post._id)}
-                  className="flex btn items-center cursor-pointer">
+                <button onClick={() => handleDeletePost(post._id)} className="flex btn items-center cursor-pointer">
                   <MdDeleteOutline color="red" fontSize={20} />
                 </button>
               </>
