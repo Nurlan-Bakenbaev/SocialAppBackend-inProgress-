@@ -1,5 +1,3 @@
-import React from 'react';
-
 const DaisyCard = ({ img, text }) => {
   return (
     <div>
@@ -14,5 +12,4 @@ const DaisyCard = ({ img, text }) => {
     </div>
   );
 };
-
 export default DaisyCard;
