@@ -83,7 +83,7 @@ const NotificationDialog = () => {
         <FaRegBell className="shake-hover" fontSize={18} />
         <span
           className=" border bg-red-500 p-1 rounded-full w-5 h-5 
-        flex items-center absolute bottom-0  right-1 z-20
+        flex items-center absolute bottom-0  right-1 
          text-slate-200 font-bold "
         >
           {data?.length}

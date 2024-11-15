@@ -1,95 +1,122 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react';
+import { FaRegCommentDots } from 'react-icons/fa';
+import { timeAgo } from './helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { AiOutlineClose } from 'react-icons/ai';
 
-const CommentDialog = ({ onClose, postId, postComments }) => {
+const CommentDialog = ({ data }) => {
   const [comment, setComment] = useState('');
+
   const queryClient = useQueryClient();
-  console.log(postComments);
+  const handleChangeComment = (e) => {
+    setComment(e.target.value);
+  };
   const {
     mutate: handleComment,
     isPending,
     error,
   } = useMutation({
-    mutationFn: async (comment) => {
-      try {
-        const res = await fetch(`http://localhost:8000/api/posts/comment/${postId}`, {
+    mutationFn: async () => {
+      const res = await fetch(
+        `http://localhost:8000/api/posts/comment/${data._id}`,
+        {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ text: comment }),
           credentials: 'include',
-        });
-        if (!res.ok) {
-          throw new Error('Failed to create comment');
         }
-        const data = await res.json();
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.error('Error creating comment:', error);
-        throw error;
+      );
+      const commentData = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message);
       }
+      return commentData;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success('Comment posted successfully');
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
       setComment('');
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.error(error);
     },
   });
-  const handleCommentChange = (e) => {
-    setComment(e.target.value);
-  };
-  const handleSubmit = () => {
-    handleComment(comment);
-  };
+
   return (
-    <div className="modal modal-open">
-      <div className="absolute modal-box h-[480px]">
-        <button
-          className="absolute right-2 top-2 text-gray-400
-           hover:text-gray-600"
-          onClick={onClose}
-        >
-          <AiOutlineClose className="text-xl" />
-        </button>
-        <h3 className="text-lg font-bold mb-4">Comments</h3>
-        <div className="overflow-y-auto max-h-[340px] p-2">
-          {postComments?.map(({ _id, text, user }, index) => (
-            <div key={index} className="border-b border-gray-200 py-2">
-              <div className="flex flex-row gap-2">
-                <img className="w-[30px] h-[30px]" src={user.profileImg || '/userPlaceholder.png'} alt="user-image" />
-                <div>
-                  <p className="text-sm font-semibold text-gray-600">{user.fullname}</p>
-                  <p className="text-xs text-gray-400">@{user.username}</p>
+    <div>
+      <button
+        className="btn"
+        onClick={() =>
+          document.getElementById('comment_modal' + data._id).showModal()
+        }
+      >
+        <FaRegCommentDots fontSize={16} /> {data.comments.length} Comments
+      </button>
+      <dialog id={`comment_modal${data._id}`} className="modal">
+        <div className="modal-box">
+          <h3 className="font-semibold text-lg">Latest comments</h3>
+          <div className="h-[260px] overflow-y-auto ">
+            {data.comments.length === 0 ? (
+              <span className="text-center"> No comments yet</span>
+            ) : (
+              data.comments.map((comment) => (
+                <div
+                  key={comment._id}
+                  className="border-b py-2 px-4 even:bg-gray-100 hover:bg-purple-100 "
+                >
+                  <Link
+                    href={`/userpage/${comment.user._id}`}
+                    className="flex flex-row items-center gap-2 "
+                  >
+                    <img
+                      src={comment.user.profileImg}
+                      alt={'photo of' + comment.user.username}
+                      className="w-[45px] h-[45px]  object-cover rounded-full"
+                    />
+                    <p>{comment.user.username}</p>
+                  </Link>
+                  <p>{comment.text}</p>
                 </div>
-              </div>
-              <p className="mt-1 text-gray-700">{text}</p>
+              ))
+            )}
+          </div>
+          <div className="modal-action flex flex-col">
+            <div className="flex flex-row gap-2 pt-4 border-t">
+              <input
+                onChange={handleChangeComment}
+                type="text"
+                value={comment}
+                placeholder="Leave a comment..."
+                className="input input-bordered focus:outline-none w-full max-w-xs"
+              />
+              <button
+                onClick={handleComment}
+                className="btn text-white bg-gradient-to-tr
+             from-purple-500 to-orange-500"
+              >
+                Comment
+              </button>
             </div>
-          ))}
+            <p className="text-slate-400 text-xs py-1">
+              Press ESC key or click the button below to close
+            </p>
+
+            <button
+              className="btn "
+              onClick={() =>
+                document.getElementById('comment_modal' + data._id).close()
+              }
+            >
+              Close
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-1 ">
-          <input
-            value={comment}
-            onChange={handleCommentChange}
-            placeholder="Leave a comment"
-            className="input input-bordered input-primary w-full focus:outline-none"
-            type="text"
-          />
-          <button
-            onClick={() => handleSubmit(postId)}
-            className="btn text-white bg-gradient-to-tr from-purple-500 to-orange-500"
-          >
-            Comment
-          </button>
-        </div>
-      </div>
-      <div className="modal-backdrop" onClick={onClose}></div>
+      </dialog>
     </div>
   );
 };
-
 export default CommentDialog;

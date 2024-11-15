@@ -1,15 +1,15 @@
-"use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { FaImages } from "react-icons/fa";
+'use client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaImages } from 'react-icons/fa';
 const CreatePost = () => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [img, setImg] = useState(null);
   const [preview, setPreview] = useState(null);
   const queryClient = useQueryClient();
-  const authUser = queryClient.getQueryData(["authUser"]);
+  const authUser = queryClient.getQueryData(['authUser']);
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setImg(selectedFile);
@@ -32,13 +32,13 @@ const CreatePost = () => {
   } = useMutation({
     mutationFn: async ({ preview: img, text }) => {
       try {
-        const res = await fetch("http://localhost:8000/api/posts/create", {
-          method: "POST",
+        const res = await fetch('http://localhost:8000/api/posts/create', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ img, text }),
-          credentials: "include",
+          credentials: 'include',
         });
         if (!res.ok) {
           const errorData = await res.json();
@@ -55,9 +55,9 @@ const CreatePost = () => {
     onSuccess: () => {
       setPreview(null);
       setImg(null);
-      setText("");
-      toast.success("Post created successfully!");
-      queryClient.invalidateQueries(["posts"]);
+      setText('');
+      toast.success('Post created successfully!');
+      queryClient.invalidateQueries(['posts']);
     },
   });
   const handleSubmit = (e) => {
@@ -81,19 +81,21 @@ const CreatePost = () => {
             name="text"
             type="text"
             placeholder="Share something"
-            className="input border-none focus:outline-none"
+            className="input border-none focus:outline-none w-full"
           />
           <button
             type="submit"
             className="absolute text-white px-7 right-0 btn bg-gradient-to-tr
              from-purple-500 to-orange-500 transition-all  ease-in-out duration-700 
-             hover:bg-gradient-to-tl hover:scale-105">
-            {IsCreatingPost ? "Posting" : "Post"}
+             hover:bg-gradient-to-tl hover:scale-105"
+          >
+            {IsCreatingPost ? 'Posting' : 'Post'}
           </button>
         </div>
         <label
           htmlFor="file"
-          className="flex flex-row mt-2 cursor-pointer items-center gap-2 shadow-sm m-1 text-blue-500">
+          className="flex flex-row mt-2 cursor-pointer items-center gap-2 shadow-sm m-1 text-blue-500"
+        >
           <FaImages fontSize={20} />
           <span className="cursor-pointer hover:scale-105">Select Image</span>
         </label>

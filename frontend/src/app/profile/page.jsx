@@ -6,6 +6,7 @@ import { FaEdit, FaRegImages } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import SkeletonProfile from '../components/Skeleton/profileSkeletone';
 import Posts from '../components/Posts';
+import FollowingCard from '../components/FollowingCard';
 
 export const Profile = () => {
   const [profileImage, setProfileImage] = useState('');
@@ -94,12 +95,12 @@ export const Profile = () => {
           body: JSON.stringify(updatedUser),
         });
         if (!res.ok) toast.error('Failed to update user');
-        else toast.success('Profile updated successfully!');
       } catch (error) {
         toast.error('An error occurred during the update');
       }
     },
     onSuccess: () => {
+      toast.success('Profile updated successfully!');
       queryClient.invalidateQueries({ queryKey: ['authUser'] });
     },
   });
@@ -120,33 +121,54 @@ export const Profile = () => {
             alt="Banner"
             className="w-full h-full object-cover"
           />
-          <label
-            onClick={() => setIsEditing(true)}
-            htmlFor="banner-input"
-            className="absolute top-2 right-4 p-2 bg-white rounded-full shadow-lg cursor-pointer"
-          >
-            <FaRegImages fontSize={20} className="text-blue-500" />
-          </label>
-          <input type="file" accept="image/*" onChange={handleBannerChange} className="hidden" id="banner-input" />
+          {isEditing && (
+            <label
+              htmlFor="banner-input"
+              className="absolute top-2 right-4 p-2 bg-white rounded-full shadow-lg cursor-pointer"
+            >
+              <FaRegImages fontSize={20} className="text-blue-500" />
+            </label>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleBannerChange}
+            className="hidden"
+            id="banner-input"
+          />
         </div>
 
         <div className="p-4 flex flex-col items-center">
           <div className="w-40 h-40 -mt-20 rounded-full ring-1 ring-slate-400 overflow-hidden relative">
-            <img src={profileImage || user?.profileImg} alt="Profile" className="w-full h-full object-cover bg-white" />
-            <label
-              htmlFor="profile-input"
-              className="absolute bottom-2 right-8 p-2 bg-white rounded-full shadow-lg cursor-pointer"
-            >
-              <FaRegImages fontSize={20} className="text-blue-500" />
-            </label>
-            <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" id="profile-input" />
+            <img
+              src={profileImage || user?.profileImg}
+              alt="Profile"
+              className="w-full h-full object-cover bg-white"
+            />
+            {isEditing && (
+              <label
+                htmlFor="profile-input"
+                className="absolute bottom-2 right-8 p-2 bg-white rounded-full shadow-lg cursor-pointer"
+              >
+                <FaRegImages fontSize={20} className="text-blue-500" />
+              </label>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+              id="profile-input"
+            />
           </div>
 
           {!isEditing ? (
             <>
               <h1 className="text-2xl font-semibold mt-2">{user?.fullname}</h1>
               <p className="text-gray-500">{user?.username}</p>
-              <p className="text-center mt-2">{user?.bio || 'This is my bio section'}</p>
+              <p className="text-center mt-2">
+                {user?.bio || 'This is my bio section'}
+              </p>
               <button
                 onClick={() => setIsEditing(true)}
                 className="mt-4 btn text-white bg-gradient-to-tr from-orange-400 to-purple-400"
@@ -232,15 +254,18 @@ export const Profile = () => {
         </div>
       </div>
       <div className="p-4">
-        <h2 className="text-lg font-semibold mb-4">Recent Posts</h2>
-        <div>
+        <h2 className="text-lg font-semibold mb-4">{user.fullname} Posts</h2>
+        <div className="flex flex-row gap-2">
           {user?.posts.length === 0
             ? 'User has no posts'
             : user?.posts?.map((post) => (
                 // TEMPORARY CARD
-                <div key={post._id} className="card bg-base-100 w-96 shadow-xl">
+                <div
+                  key={post._id}
+                  className="card bg-base-100 max-w-[280px] shadow-xl"
+                >
                   <figure>
-                    <img src={post.img} alt={post._id} />
+                    <img className="" src={post.img} alt={post._id} />
                   </figure>
                   <div className="card-body">
                     <h2 className="card-title">{post.text}</h2>

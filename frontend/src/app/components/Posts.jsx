@@ -28,13 +28,16 @@ const Posts = ({ postData: { data } }) => {
   } = useMutation({
     mutationFn: async (postId) => {
       try {
-        const res = await fetch(`http://localhost:8000/api/posts/like/${postId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
+        const res = await fetch(
+          `http://localhost:8000/api/posts/like/${postId}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          }
+        );
         if (!res.ok) {
           throw new Error(data.error);
         }
@@ -57,13 +60,16 @@ const Posts = ({ postData: { data } }) => {
   const { mutate: deletePost, isPending } = useMutation({
     mutationFn: async (postId) => {
       try {
-        const res = await fetch(`http://localhost:8000/api/posts/delete/${postId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
+        const res = await fetch(
+          `http://localhost:8000/api/posts/delete/${postId}`,
+          {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          }
+        );
         if (!res.ok) {
           throw new Error(data.error);
         }
@@ -93,7 +99,7 @@ const Posts = ({ postData: { data } }) => {
         rounded-lg p-3 mt-4"
         >
           {post.user && (
-            <div className="hover:bg-purple-50 p-2">
+            <div className="flex justify-between items-center hover:bg-purple-50 p-2">
               <UserCard
                 userLogo={post?.user?.profileImg || '/userPlaceholder.png'}
                 date={post?.user?.date}
@@ -101,9 +107,11 @@ const Posts = ({ postData: { data } }) => {
                 fullname={post?.user?.fullname}
                 id={post.user?._id}
               />
+              <p className="text-gray-400 text-sm">
+                Posted: {timeAgo(post.createdAt)}
+              </p>
             </div>
           )}
-          <p className="text-gray-400 text-sm">Created: {timeAgo(post.createdAt)}</p>
           <div>
             {post?.img && (
               <Image
@@ -126,29 +134,60 @@ const Posts = ({ postData: { data } }) => {
                 }}
               >
                 <FaHeart
-                  className={`${authUser?.likedPosts.includes(post._id) ? 'text-red-500' : 'text-red-200'}  mr-1`}
+                  className={`${
+                    authUser?.likedPosts.includes(post._id)
+                      ? 'text-red-500'
+                      : 'text-red-200'
+                  }  mr-1`}
                 />
               </button>
               <span>{post.likes.length} likes</span>
             </div>
-            <div className="flex items-center cursor-pointer" onClick={() => toggleComments(data.indexOf(post))}>
-              <FaRegComment className="text-gray-500 mr-1" />
-              <button onClick={() => setShowComments(true)}>{post?.comments?.length || 0} Comments</button>
-              <div>
-                {showComments && (
-                  <CommentDialog
-                    postId={post._id}
-                    postComments={post.comments}
-                    onClose={() => setShowComments(false)}
-                  />
-                )}
-              </div>
-            </div>
+            {/*here goes COMMENTS */}
+            <CommentDialog data={post} />
             {post?.user?._id === authUser?._id && (
               <>
-                <button onClick={() => handleDeletePost(post._id)} className="flex btn items-center cursor-pointer">
-                  <MdDeleteOutline color="red" fontSize={20} />
-                </button>
+                <div className="text-center">
+                  <button
+                    className="btn"
+                    onClick={() =>
+                      document
+                        .getElementById('delete_modal_2' + post._id)
+                        .showModal()
+                    }
+                  >
+                    <MdDeleteOutline color="red" fontSize={20} />{' '}
+                  </button>
+                  <dialog id={`delete_modal_2${post._id}`} className="modal">
+                    <div className="modal-box">
+                      <p className="font-bold text-lg">
+                        Are you sure want to delete post ?
+                      </p>
+                      <div className="flex flex-row gap-4 py-4 px-2 justify-center">
+                        <button
+                          onClick={() => handleDeletePost(post._id)}
+                          className="flex btn bg-red-500 hover:bg-red-400 items-center cursor-pointer"
+                        >
+                          <MdDeleteOutline
+                            className="text-white"
+                            fontSize={20}
+                          />
+                          Delete
+                        </button>
+                        <button
+                          onClick={() =>
+                            document
+                              .getElementById(`delete_modal_2${post._id}`)
+                              .close()
+                          }
+                          className="btn bg-green-500 px-6 hover:bg-green-400"
+                        >
+                          X Close
+                        </button>
+                      </div>
+                    </div>
+                  </dialog>
+                </div>
               </>
             )}
           </div>

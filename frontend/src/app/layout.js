@@ -17,14 +17,36 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: 'POST APP',
-  description: 'My Portfolio app',
+  title: 'Post App - Share and Connect',
+  description:
+    'Discover, create, and share amazing posts on the Post App. Connect with others and express your ideas!',
+  icons: {
+    icon: '/icon.png',
+  },
+  openGraph: {
+    title: 'Post App - Share and Connect',
+    description:
+      'Discover, create, and share amazing posts on the Post App. Connect with others and express your ideas!',
+    url: 'https://your-app-url.com',
+    // Replace with your app's URL
+
+    images: [
+      {
+        url: '/meta-banner.jpg',
+        alt: 'Post App - Share and Connect',
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html data-theme="light" lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <QueryProviderWrapper>
           <NavBar />
           <div className="mb-24 ">{children}</div>
