@@ -1,18 +1,21 @@
-"use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+'use client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 const Login = () => {
   const [userData, setUserData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const router = useRouter();
   const handleChangeLogin = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+    setUserData({
+      ...userData,
+      [e.target.name]: e.target.value,
+    });
   };
   const queryClient = useQueryClient();
   const {
@@ -22,13 +25,13 @@ const Login = () => {
     error,
   } = useMutation({
     mutationFn: async (userData) => {
-      const res = await fetch("http://localhost:8000/api/auth/login", {
-        method: "POST",
+      const res = await fetch('http://localhost:8000/api/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
-        credentials: "include",
+        credentials: 'include',
       });
       if (!res.ok) {
         const errorData = await res.json();
@@ -38,11 +41,13 @@ const Login = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success("Login successfully!");
+      toast.success('Login successfully!');
 
-      router.push("/");
+      router.push('/');
 
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      queryClient.invalidateQueries({
+        queryKey: ['authUser'],
+      });
     },
   });
   const handleSubmit = (e) => {
@@ -89,8 +94,9 @@ const Login = () => {
             className="text-white font-bold px-7 w-full 
             right-0 btn bg-gradient-to-tr from-purple-500
             to-orange-500 transition-all ease-out duration-500
-            hover:bg-gradient-to-tl hover:scale-105">
-            {isPending ? "Loading..." : "Login"}
+            hover:bg-gradient-to-tl hover:scale-105"
+          >
+            {isPending ? 'Loading...' : 'Login'}
           </button>
         </form>
         <p className="text-center">

@@ -98,13 +98,15 @@ const Posts = ({ postData: { data } }) => {
           className="shadow-md border 
         rounded-lg p-3 mt-4">
           {post.user && (
-            <UserCard
-              userLogo={post?.user?.profileImg || "/userPlaceholder.png"}
-              date={post?.user?.date}
-              username={post?.user?.username}
-              fullname={post?.user?.fullname}
-              id={post.user?._id}
-            />
+            <div className="hover:bg-purple-50 p-2">
+              <UserCard
+                userLogo={post?.user?.profileImg || "/userPlaceholder.png"}
+                date={post?.user?.date}
+                username={post?.user?.username}
+                fullname={post?.user?.fullname}
+                id={post.user?._id}
+              />
+            </div>
           )}
           <p className="text-gray-400 text-sm">
             Created: {timeAgo(post.createdAt)}
@@ -162,9 +164,6 @@ const Posts = ({ postData: { data } }) => {
                   onClick={() => handleDeletePost(post._id)}
                   className="flex btn items-center cursor-pointer">
                   <MdDeleteOutline color="red" fontSize={20} />
-                </button>
-                <button className="btn">
-                  <CiEdit fontSize={20} />
                 </button>
               </>
             )}

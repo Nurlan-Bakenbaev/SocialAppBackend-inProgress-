@@ -1,30 +1,25 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import Posts from "../components/Posts";
-
+'use client';
+import { useQuery } from '@tanstack/react-query';
+import Posts from '../components/Posts';
 const LikedPosts = () => {
-  const { data: user } = useQuery({ queryKey: ["authUser"] });
+  const { data: user } = useQuery({ queryKey: ['authUser'] });
   const {
     data: likedPosts,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["likedPosts"],
+    queryKey: ['likedPosts'],
     queryFn: async () => {
       try {
-        const res = await fetch(
-          `http://localhost:8000/api/posts/likedposts/${user._id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+        const res = await fetch(`http://localhost:8000/api/posts/likedposts/${user._id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
         if (!res.ok) {
-          throw new Error("Failed to fetch liked posts");
+          throw new Error('Failed to fetch liked posts');
         }
         return await res.json();
       } catch (error) {
@@ -32,12 +27,13 @@ const LikedPosts = () => {
       }
     },
   });
-  console.log(likedPosts);
   return (
-    <div className="w-full flex flex-row border justify-between">
-     <div className="w-[280px]"> {likedPosts && <Posts postData={likedPosts} />}</div>
+    <div>
+      <div className="w-full flex flex-col  items-center justify-center">
+        <h2 className="text-2xl font-semibold">Liked posts: </h2>
+        <div>{likedPosts && <Posts postData={likedPosts} />}</div>
+      </div>
     </div>
   );
 };
-
 export default LikedPosts;

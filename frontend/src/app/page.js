@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import CreatePost from "./components/CreatePost";
 import FollowingCard from "./components/FollowingCard";
 import UserInfo from "./components/UserInfo";
-import Loading from "./components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Feed from "./components/Feed";

@@ -1,13 +1,13 @@
-"use client";
-import Link from "next/link";
-import React from "react";
-import { usePathname } from "next/navigation";
-import { FaRegBell } from "react-icons/fa";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import { FaRegBell } from 'react-icons/fa';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 const NavBar = () => {
   const pathname = usePathname();
-  const user = false;
+  const { data: user } = useQuery({ queryKey: ['authUser'] });
   const {
     isError,
     mutate: logOutMutation,
@@ -15,12 +15,12 @@ const NavBar = () => {
   } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/auth/logout", {
-          method: "POST",
+        const res = await fetch('http://localhost:8000/api/auth/logout', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          credentials: "include",
+          credentials: 'include',
         });
         const data = res.json();
       } catch (error) {
@@ -28,33 +28,32 @@ const NavBar = () => {
       }
     },
     onSuccess: () => {
-      toast.success("Logout successfully!");
+      toast.success('Logout successfully!');
       setTimeout(() => {
-        window.location.href = "/login";
+        window.location.href = '/login';
       }, 2000);
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to logout");
+      toast.error(error.message || 'Failed to logout');
     },
   });
-  if (pathname === "/login" || pathname === "/auth") {
+  if (pathname === '/login' || pathname === '/auth') {
     return null;
   }
   return (
-    <div className="shadow-lg">
+    <div className={`shadow-lg mb-10 ${pathname === '/profile' || (pathname.startsWith('/userpage/') && 'mb-0')}`}>
       <nav className="navbar mx-auto w-[80%]">
         <div className="flex-1">
           <Link
             className="uppercase text-3xl font-bold bg-gradient-to-r from-purple-500 to-orange-500 text-transparent bg-clip-text"
-            href="/">
-            Light-Up
+            href="/"
+          >
+            Post-App
           </Link>
         </div>
         <ul>
-          {user ? (
-            <Link
-              className="m-5 hover:scale-105 hover:text-blue-500"
-              href={"/auth"}>
+          {!user ? (
+            <Link className="m-5 hover:scale-105 hover:text-blue-500" href={'/auth'}>
               SignUp
             </Link>
           ) : (
@@ -63,13 +62,12 @@ const NavBar = () => {
                 e.preventDefault(), logOutMutation();
               }}
               className="m-5  hover:scale-105 hover:text-blue-500"
-              href={"/login"}>
+              href={'/login'}
+            >
               Logout
             </button>
           )}
-          <Link
-            className="m-5  hover:scale-105 hover:text-blue-500"
-            href={"/notify"}>
+          <Link className="m-5  hover:scale-105 hover:text-blue-500" href={'/notify'}>
             <FaRegBell fontSize={18} />
           </Link>
         </ul>

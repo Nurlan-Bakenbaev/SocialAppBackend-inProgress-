@@ -3,10 +3,14 @@ import protectedRoute from "../middleware/protectedRoute.js";
 import {
   followUnFollowUser,
   getSuggestedUsers,
+  getUserById,
   getUserProfile,
   updateUser,
 } from "../controllers/usersControllers.js";
 const userRoutes = express.Router();
+
+userRoutes.get("/profile/:userId", getUserById);
+
 userRoutes.get("/profile/:username", protectedRoute, getUserProfile);
 userRoutes.get("/suggested", protectedRoute, getSuggestedUsers);
 userRoutes.post("/follow/:id", protectedRoute, followUnFollowUser);

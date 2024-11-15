@@ -8,8 +8,7 @@ export const getUserProfile = async (req, res) => {
   try {
     const { username } = req.params;
     console.log(username);
-    const getUser = await User.findOne({ username })
-      .select("-password")
+    const getUser = await User.findOne({ username }).select("-password");
 
     if (!getUser) {
       return res.status(404).json({ status: "false", error: "User not found" });
@@ -19,8 +18,22 @@ export const getUserProfile = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// Get suggested users
+// get user by Id
+export const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const getUser = await User.findById(userId)
+      .select("-password")
+      .populate("posts");
+    if (!getUser) {
+      return res.status(404).json({ status: "false", error: "User not found" });
+    }
+    res.status(200).json({ status: "success", data: getUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// get suggested users
 export const getSuggestedUsers = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -44,6 +57,7 @@ export const getSuggestedUsers = async (req, res) => {
   }
 };
 
+// the hardest func
 export const followUnFollowUser = async (req, res) => {
   try {
     const { id } = req.params;
