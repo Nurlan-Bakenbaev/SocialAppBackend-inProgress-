@@ -41,14 +41,11 @@ const CreatePost = () => {
           credentials: 'include',
         });
         if (!res.ok) {
-          const errorData = await res.json();
-          console.log(errorData.error);
-          toast.error(errorData.error);
-
-          throw new Error(errorData.error);
+          throw new Error(error);
         }
         return await res.json();
       } catch (error) {
+        toast.error('Image is an invalid format or bigger than 2Mb');
         throw new Error(error);
       }
     },

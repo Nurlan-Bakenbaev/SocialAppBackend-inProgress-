@@ -6,20 +6,12 @@ import UserCard from './UserCard';
 import { MdDeleteOutline } from 'react-icons/md';
 import { timeAgo } from '@/app/components/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CiEdit } from 'react-icons/ci';
 import Loading from './Loading';
 import CommentDialog from './commentDialog';
 
 const Posts = ({ postData: { data } }) => {
-  const [visiblePostIndex, setVisiblePostIndex] = useState(null);
-  const [showComments, setShowComments] = useState(false);
-  //TAN STACK
   const queryClient = useQueryClient();
   const authUser = queryClient.getQueryData(['authUser']);
-
-  const toggleComments = (index) => {
-    setVisiblePostIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
 
   const {
     mutate: likeUnLike,
@@ -86,13 +78,13 @@ const Posts = ({ postData: { data } }) => {
   const handleDeletePost = (postId) => {
     deletePost(postId);
   };
-  if (data?.length === 0) {
+  if (!data) {
     return <p>No posts found.</p>;
   }
   return (
     <div>
       {isPending && <Loading />}
-      {data.map((post) => (
+      {data?.map((post) => (
         <div
           key={post._id}
           className="shadow-md border 
@@ -113,10 +105,12 @@ const Posts = ({ postData: { data } }) => {
             </div>
           )}
           <div>
+          <p className="text-gray-700">{post.text}</p>
+
             {post?.img && (
               <Image
                 src={post?.img}
-                alt="Post"
+                alt="Post-Img"
                 width={600}
                 height={400}
                 className="w-full rounded-lg mb-2 min-w-[250px]"
@@ -124,7 +118,6 @@ const Posts = ({ postData: { data } }) => {
                 blurDataURL="/post-standart.png"
               />
             )}
-            <p className="text-gray-700">{post.text}</p>
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex items-center">
@@ -143,7 +136,6 @@ const Posts = ({ postData: { data } }) => {
               </button>
               <span>{post.likes.length} likes</span>
             </div>
-            {/*here goes COMMENTS */}
             <CommentDialog data={post} />
             {post?.user?._id === authUser?._id && (
               <>
@@ -161,12 +153,12 @@ const Posts = ({ postData: { data } }) => {
                   <dialog id={`delete_modal_2${post._id}`} className="modal">
                     <div className="modal-box">
                       <p className="font-bold text-lg">
-                        Are you sure want to delete post ?
+                        Do you want to delete post ?
                       </p>
                       <div className="flex flex-row gap-4 py-4 px-2 justify-center">
                         <button
                           onClick={() => handleDeletePost(post._id)}
-                          className="flex btn bg-red-500 hover:bg-red-400 items-center cursor-pointer"
+                          className="flex btn bg-red-500 hover:bg-red-400 text-white items-center cursor-pointer"
                         >
                           <MdDeleteOutline
                             className="text-white"

@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import NotificationCard from './NotificationCard';
-import { FaRegBell } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-
+import NotificationCard from './NotificationCard';
+import { FaRegBell } from 'react-icons/fa';
+import { FiAlertOctagon } from 'react-icons/fi';
 const NotificationDialog = () => {
   const queryClient = useQueryClient();
 
@@ -26,7 +26,6 @@ const NotificationDialog = () => {
             credentials: 'include',
           }
         );
-
         if (!res.ok) {
           throw new Error(res.statusText);
         }
@@ -38,7 +37,6 @@ const NotificationDialog = () => {
       }
     },
   });
-  console.log(data?.length);
   const {
     mutate: DeleteNotify,
     isPending,
@@ -63,7 +61,6 @@ const NotificationDialog = () => {
         const data = await res.json();
         return data;
       } catch (error) {
-        console.log(error);
         throw new Error(error.message);
       }
     },
@@ -72,11 +69,9 @@ const NotificationDialog = () => {
       toast.success(deleteData.message);
     },
   });
-
   return (
     <div>
       <button
-        disabled={data?.length === 0}
         className={` relative btn  hover:bg-purple-100`}
         onClick={() => document.getElementById('notify').showModal()}
       >
@@ -91,10 +86,16 @@ const NotificationDialog = () => {
       </button>
       <dialog id="notify" className="modal">
         <div className="modal-box">
-          {data?.message ||
+          {data?.length === 0 ? (
+            <span>
+              <FiAlertOctagon color="red" fontSize={25} />{' '}
+              <p>No notifications</p>
+            </span>
+          ) : (
             data?.map((item, index) => (
               <NotificationCard key={index} data={item} />
-            ))}
+            ))
+          )}
           <div className="modal-action">
             <button onClick={() => DeleteNotify()} className="btn bg-red-300">
               {isPending ? 'Deleting' : 'Delete'}

@@ -1,24 +1,24 @@
-"use client";
-import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
+'use client';
+import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 const SignUp = () => {
   const [userData, setUserData] = useState({
-    fullname: "",
-    username: "",
-    email: "",
-    password: "",
+    fullname: '',
+    username: '',
+    email: '',
+    password: '',
   });
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
   const { mutate, isError, isLoading, error } = useMutation({
     mutationFn: async (userData) => {
-      const res = await fetch("http://localhost:8000/api/auth/signup", {
-        method: "POST",
+      const res = await fetch('http://localhost:8000/api/auth/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       });
@@ -34,13 +34,13 @@ const SignUp = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success("User created successfully!");
+      toast.success('User created successfully!');
       setTimeout(() => {
-        window.location.href = "/login";
+        window.location.href = '/login';
       }, 2000);
     },
     onError: (error) => {
-      toast.error(error.error || "Failed to create user");
+      toast.error(error.error || 'Failed to create user');
     },
   });
   const handleSubmit = (e) => {
@@ -48,7 +48,7 @@ const SignUp = () => {
     mutate(userData);
   };
   return (
-    <div className="flex items-center justify-center ">
+    <div className="flex items-center justify-center mt-10">
       <fieldset className="w-full max-w-md p-5 shadow-lg rounded-lg ">
         <h2 className="text-xl font-bold text-center mb-2">Sign Up</h2>
         <form onSubmit={handleSubmit}>
@@ -120,14 +120,15 @@ const SignUp = () => {
             disabled={isLoading}
             className={`btn text-white mt-3 font-bold w-full py-2 rounded-lg transition-all duration-300 ${
               isLoading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-tr from-purple-500 to-orange-500 hover:bg-gradient-to-tl hover:scale-105"
-            }`}>
-            {isLoading ? "Loading" : "Sign Up"}
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-tr from-purple-500 to-orange-500 hover:bg-gradient-to-tl hover:scale-105'
+            }`}
+          >
+            {isLoading ? 'Loading' : 'Sign Up'}
           </button>
         </form>
         <p className="text-center mt-4">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link href="/login" className="link text-blue-600">
             Log in
           </Link>
