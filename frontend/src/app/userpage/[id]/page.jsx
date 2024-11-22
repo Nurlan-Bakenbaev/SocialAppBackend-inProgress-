@@ -39,7 +39,7 @@ export const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="relative w-full shadow-xl rounded-lg overflow-hidden">
-        <div className="h-48 bg-gradient-to-tr from-orange-400 to-purple-400 relative">
+        <div className="h-60 bg-gradient-to-tr from-orange-400 to-purple-400 relative">
           <img
             src={user?.coverImg || '/banner-placeholder.png'}
             alt="Banner"
@@ -48,7 +48,7 @@ export const Profile = () => {
         </div>
 
         <div className="p-4 flex flex-col items-center">
-          <div className="w-40 h-40 -mt-20 rounded-full ring-1 ring-slate-400 overflow-hidden relative">
+          <div className="w-40 h-40 -mt-24 rounded-full ring-1 ring-slate-400 overflow-hidden relative">
             <img
               src={user?.profileImg || '/user-place.png'}
               alt="Profile"

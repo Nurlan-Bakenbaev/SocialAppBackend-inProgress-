@@ -91,7 +91,7 @@ const Posts = ({ postData: { data } }) => {
         rounded-lg p-3 mt-4"
         >
           {post.user && (
-            <div className="flex justify-between items-center hover:bg-purple-50 p-2">
+            <>
               <UserCard
                 userLogo={post?.user?.profileImg || '/userPlaceholder.png'}
                 date={post?.user?.date}
@@ -102,10 +102,10 @@ const Posts = ({ postData: { data } }) => {
               <p className="text-gray-400 text-sm">
                 Posted: {timeAgo(post.createdAt)}
               </p>
-            </div>
+            </>
           )}
           <div>
-          <p className="text-gray-700">{post.text}</p>
+            <p className="text-gray-700">{post.text}</p>
 
             {post?.img && (
               <Image
