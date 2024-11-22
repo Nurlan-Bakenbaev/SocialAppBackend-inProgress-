@@ -12,13 +12,16 @@ export const Profile = () => {
   } = useQuery({
     queryKey: ['getUser', userId],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:8000/api/users/profile/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
+      const res = await fetch(
+        `http://localhost:8000/api/users/profile/${userId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        }
+      );
       if (!res.ok) throw new Error('Failed to fetch user');
       return res.json();
     },
@@ -32,24 +35,33 @@ export const Profile = () => {
         <Loading />
       </div>
     );
-  console.log(user.posts);
   if (fetchError) return <div>Error: {fetchError.message}</div>;
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="relative w-full shadow-xl rounded-lg overflow-hidden">
         <div className="h-48 bg-gradient-to-tr from-orange-400 to-purple-400 relative">
-          <img src={user?.coverImg || '/banner-placeholder.png'} alt="Banner" className="w-full h-full object-cover" />
+          <img
+            src={user?.coverImg || '/banner-placeholder.png'}
+            alt="Banner"
+            className="w-full h-full object-cover"
+          />
         </div>
 
         <div className="p-4 flex flex-col items-center">
           <div className="w-40 h-40 -mt-20 rounded-full ring-1 ring-slate-400 overflow-hidden relative">
-            <img src={user?.profileImg} alt="Profile" className="w-full h-full object-cover bg-white" />
+            <img
+              src={user?.profileImg || '/user-place.png'}
+              alt="Profile"
+              className="w-full h-full object-cover bg-white"
+            />
           </div>
 
           <div>
             <h1 className="text-2xl font-semibold mt-2">{user?.fullname}</h1>
             <p className="text-gray-500">{user?.username}</p>
-            <p className="text-center mt-2">{user?.bio || 'This is my bio section'}</p>
+            <p className="text-center mt-2">
+              {user?.bio || 'This is my bio section'}
+            </p>
           </div>
         </div>
       </div>

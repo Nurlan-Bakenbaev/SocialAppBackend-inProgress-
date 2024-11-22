@@ -52,7 +52,10 @@ export const getAllPosts = async (req, res) => {
     if (posts.length === 0) {
       return res.status(404).json({ error: "No posts found" });
     }
-    res.status(200).json({ status: "success", data: posts });
+
+    res
+      .status(200)
+      .json({ feedType: "Get All Posts", status: "success", data: posts });
   } catch (error) {
     console.log("Error in Post Controller", error.message);
     res.status(500).json({ error: error.message });
@@ -75,7 +78,11 @@ export const getFollowingPosts = async (req, res) => {
     if (feedPosts.length === 0) {
       return res.status(204).json({ message: "No posts found" });
     }
-    res.status(200).json(feedPosts);
+    res.status(200).json({
+      feedType: "Following Posts",
+      status: "success",
+      data: feedPosts,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

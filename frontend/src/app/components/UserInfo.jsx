@@ -1,36 +1,39 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { FaEnvelope, FaPen, FaUsers } from "react-icons/fa";
-import UserInfoSkeleton from "./Skeleton/UserInfoSkeleton";
-import Link from "next/link";
-import Image from "next/image";
+'use client';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { FaEnvelope, FaPen, FaUsers } from 'react-icons/fa';
+import UserInfoSkeleton from './Skeleton/UserInfoSkeleton';
+import Link from 'next/link';
+import Image from 'next/image';
+import FollowingDialogCard from './FollowingDialogCard';
 
 const UserInfo = () => {
-  const { data: user, isLoading } = useQuery({ queryKey: ["authUser"] });
-
+  const { data: user, isLoading } = useQuery({ queryKey: ['authUser'] });
+  console.log(user);
   if (isLoading) return <UserInfoSkeleton />;
   return (
     <div
       className="border bg-base-100 shadow-md 
-    rounded-lg  w-full min-w-[280px] lg:max-w-xl mx-auto relative overflow-hidden">
+    rounded-lg  w-[320px]  mx-auto relative overflow-hidden"
+    >
       <img
-        className="h-[80px] w-full opacity-85 absolute object-cover  "
-        src={user?.coverImg || "/colorful.jpeg"}
+        className="h-[85px] w-full opacity-85 absolute object-cover  "
+        src={user?.coverImg || '/colorful.jpeg'}
         alt="Cover-Image"
       />
       <div className="p-2 ">
         <Link
-          href={"/profile"}
-          className="flex  flex-col sm:flex-row items-center mb-3 text-white relative z-20 ">
+          href={'/profile'}
+          className="flex  flex-col sm:flex-row items-center mb-3 text-white relative z-20 "
+        >
           <Image
             width={40}
             height={40}
-            src={user?.profileImg || "/userPlaceholder.png"}
+            src={user?.profileImg || '/userPlaceholder.png'}
             alt="User Profile"
             className="w-16 h-16 object-cover rounded-full mx-2"
           />
-          <div className="text-center sm:text-left bg-slate-600 bg-opacity-60 px-4">
+          <div className="text-center sm:text-left bg-slate-600 bg-opacity-50 px-4">
             <h2 className="text-lg font-semibold">{user?.fullname}</h2>
             <p className="text-sm">@{user?.username}</p>
           </div>
@@ -42,9 +45,9 @@ const UserInfo = () => {
             <span className="text-sm">{user?.followers.length} Followers </span>
           </div>
           <div className="flex items-center mb-1 mr-2">
-            <FaUsers color="blue" className=" mr-1" />
             <span className="text-sm ">
-              {user?.following.length || 0} Following
+              <FollowingDialogCard user={user} />
+          
             </span>
           </div>
           <div className="flex items-center mb-1">
@@ -55,7 +58,7 @@ const UserInfo = () => {
 
         <h3 className="font-semibold mt-3 text-sm">Bio:</h3>
         <p className="text-gray-700 text-sm">
-          {user?.bio || "No bio available"}
+          {user?.bio || 'No bio available'}
         </p>
 
         <h3 className="font-semibold text-sm mt-3">Links:</h3>
@@ -64,7 +67,8 @@ const UserInfo = () => {
             <Link
               className=" text-gray-700 text-sm"
               href={user.link}
-              target="_blank">
+              target="_blank"
+            >
               {user.link}
             </Link>
           ) : (

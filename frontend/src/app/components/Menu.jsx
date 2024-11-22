@@ -9,8 +9,8 @@ import {
 } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 
-import DialogWindow from './DialogWindow';
 import Link from 'next/link';
+import SearchUserWindow from './SearchUserWindow';
 
 const Menu = () => {
   const pathName = usePathname();
@@ -37,7 +37,7 @@ const Menu = () => {
           <span className="text-xs">Search</span>
         </button>
 
-        <DialogWindow
+        <SearchUserWindow
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
         />

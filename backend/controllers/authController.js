@@ -99,7 +99,9 @@ export const logout = (req, res) => {
 //find my account
 export const getMyUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).populate("posts");
+    const user = await User.findById(req.user._id)
+      .populate("posts")
+      .populate("following");
 
     res.status(200).json(user);
   } catch (error) {

@@ -7,13 +7,14 @@ import bcrypt from "bcryptjs";
 export const getUserProfile = async (req, res) => {
   try {
     const { username } = req.params;
-    console.log(username);
-    const getUser = await User.findOne({ username }).select("-password");
+    const getUsers = await User.find({
+      username: { $regex: username, $options: "i" },
+    }).select("-password");
 
-    if (!getUser) {
+    if (getUsers.length === 0) {
       return res.status(404).json({ status: "false", error: "User not found" });
     }
-    res.status(200).json({ status: "success", data: getUser });
+    res.status(200).json({ status: "success", data: getUsers });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

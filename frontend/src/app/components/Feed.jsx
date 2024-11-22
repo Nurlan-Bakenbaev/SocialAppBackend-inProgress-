@@ -1,30 +1,30 @@
-import React, { useEffect } from "react";
-import Posts from "./Posts";
-import PostsSkeleton from "./Skeleton/PostSkeletone";
-import { useQuery } from "@tanstack/react-query";
+import React, { useEffect } from 'react';
+import Posts from './Posts';
+import PostsSkeleton from './Skeleton/PostSkeletone';
+import { useQuery } from '@tanstack/react-query';
 
 const Feed = ({ feedType }) => {
   const getPostEndPoint = () => {
     switch (feedType) {
-      case "latest":
-        return "http://localhost:8000/api/posts/all";
-      case "following":
-        return "http://localhost:8000/api/posts/following";
+      case 'latest':
+        return 'http://localhost:8000/api/posts/all';
+      case 'following':
+        return 'http://localhost:8000/api/posts/following';
       default:
-        return "http://localhost:8000/api/posts/all";
+        return 'http://localhost:8000/api/posts/all';
     }
   };
   const POST_ENDPOINT = getPostEndPoint();
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ['posts'],
     queryFn: async () => {
       try {
         const res = await fetch(POST_ENDPOINT, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          credentials: "include",
+          credentials: 'include',
         });
         if (!res.ok) {
           throw new Error(data.error);
@@ -40,13 +40,13 @@ const Feed = ({ feedType }) => {
   useEffect(() => {
     refetch();
   }, [feedType, refetch]);
-  if (error) {
+  if (data?.length === 0) {
     return <p className="text-red-500">Posts not found</p>;
   }
   return (
     <div>
       <h2 className="text-xl  my-4">
-        {feedType === "latest" ? "Latest Posts" : "Following posts"}
+        {feedType === 'latest' ? 'Latest Posts' : 'Following posts'}
       </h2>
 
       {!data || isRefetching ? <PostsSkeleton /> : <Posts postData={data} />}

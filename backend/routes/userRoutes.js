@@ -11,7 +11,7 @@ const userRoutes = express.Router();
 
 userRoutes.get("/profile/:userId", getUserById);
 
-userRoutes.get("/profile/:username", protectedRoute, getUserProfile);
+userRoutes.get("/profile/search/:username", protectedRoute, getUserProfile);
 userRoutes.get("/suggested", protectedRoute, getSuggestedUsers);
 userRoutes.post("/follow/:id", protectedRoute, followUnFollowUser);
 userRoutes.patch("/update", protectedRoute, updateUser);
