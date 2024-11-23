@@ -1,4 +1,3 @@
-import { ListItem } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 import { FaUsers } from 'react-icons/fa';
@@ -9,20 +8,20 @@ const FollowingDialogCard = ({ user }) => {
       <button
         className="btn m-1"
         onClick={() =>
-          document.getElementById(`following + ${user._id} `).showModal()
+          document.getElementById(`following + ${user?._id} `).showModal()
         }
       >
         <FaUsers color="blue" className=" mr-1" />
-        {user.following.length} Following
+        {user?.following?.length} Following
       </button>
       <dialog
-        id={`following + ${user._id} `}
+        id={`following + ${user?._id} `}
         className="modal modal-bottom sm:modal-middle"
       >
         <div className="modal-box">
           <h3 className="font-bold text-lg">Your Friends list:</h3>
           <div>
-            {user.following.map((item) => (
+            {user?.following.map((item) => (
               <Link
                 className="flex flex-row p-2 border-b gap-2 items-center hover:scale-105 hover:bg-purple-100 even:bg-slate-100"
                 key={item._id}

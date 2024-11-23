@@ -37,7 +37,7 @@ export const Profile = () => {
     );
   if (fetchError) return <div>Error: {fetchError.message}</div>;
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center text-center">
       <div className="relative w-full shadow-xl rounded-lg overflow-hidden">
         <div className="h-60 bg-gradient-to-tr from-orange-400 to-purple-400 relative">
           <img
