@@ -39,7 +39,7 @@ export const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col items-center text-center">
       <div className="relative w-full shadow-xl rounded-lg overflow-hidden">
-        <div className="h-60 bg-gradient-to-tr from-orange-400 to-purple-400 relative">
+        <div className="h-60 bg-slate-500 relative">
           <img
             src={user?.coverImg || '/banner-placeholder.png'}
             alt="Banner"
@@ -71,7 +71,9 @@ export const Profile = () => {
           {user?.posts?.length === 0
             ? 'User has no posts'
             : user?.posts?.map((post, index) => (
-                <div key={index} className="card bg-base-100 w-96 shadow-xl">
+                <div
+                  key={index}
+                  className="flex flex-row card bg-base-100 w-96 shadow-xl">
                   <DaisyCard img={post.img} text={post.text} />
                 </div>
               ))}

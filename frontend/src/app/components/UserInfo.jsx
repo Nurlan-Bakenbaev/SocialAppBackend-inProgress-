@@ -47,7 +47,6 @@ const UserInfo = () => {
           <div className="flex items-center mb-1 mr-2">
             <span className="text-sm ">
               <FollowingDialogCard user={user} />
-          
             </span>
           </div>
           <div className="flex items-center mb-1">
@@ -56,12 +55,12 @@ const UserInfo = () => {
           </div>
         </div>
 
-        <h3 className="font-semibold mt-3 text-sm">Bio:</h3>
+        <h3 className="font-semibold mt-3 text-sm text-green-600">Bio:</h3>
         <p className="text-gray-700 text-sm">
           {user?.bio || 'No bio available'}
         </p>
 
-        <h3 className="font-semibold text-sm mt-3">Links:</h3>
+        <h3 className="font-semibold text-sm mt-3 text-blue-400">Links:</h3>
         <ul className="list-disc pl-5 mb-3">
           {user?.link ? (
             <Link

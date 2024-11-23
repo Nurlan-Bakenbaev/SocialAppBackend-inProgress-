@@ -45,14 +45,6 @@ const SearchUserWindow = ({ isOpen, onClose, users = {} }) => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <button
-            className=" text-white font-bold px-7 
-        right-0 btn bg-gradient-to-tr from-purple-500
-         to-orange-500 transition-all ease-out duration-500
-          hover:bg-gradient-to-tl hover:scale-105"
-          >
-            Post
-          </button>
         </div>
         <div className="max-h-60 overflow-y-auto">
           {foundUsers?.data?.length > 0 ? (

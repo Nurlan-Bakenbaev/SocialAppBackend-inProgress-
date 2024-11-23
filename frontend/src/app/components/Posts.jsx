@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
-import { FaRegComment, FaHeart } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 import UserCard from './UserCard';
 import { MdDeleteOutline } from 'react-icons/md';
 import { timeAgo } from '@/app/components/helpers';
@@ -42,9 +41,9 @@ const Posts = ({ postData: { data } }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
     },
   });
+
   const handleLikedPost = (postId) => {
     likeUnLike(postId);
   };

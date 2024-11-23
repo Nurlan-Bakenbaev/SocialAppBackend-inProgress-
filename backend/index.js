@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 //Routes
 app.get("/", (req, res) => {
-  res.status(200).json("hello");
+  res.status(200).json("You are connected to Post App backend!");
 });
 
 app.use("/api/auth", authRoutes);
