@@ -25,7 +25,7 @@ const Login = () => {
     error,
   } = useMutation({
     mutationFn: async (userData) => {
-      const res = await fetch('http://localhost:8000/api/auth/login', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

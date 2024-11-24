@@ -13,9 +13,9 @@ const SignUp = () => {
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-  const { mutate, isError, isLoading, error } = useMutation({
+  const { mutate, isError, isLoading, error, isPending } = useMutation({
     mutationFn: async (userData) => {
-      const res = await fetch('http://localhost:8000/api/auth/signup', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,6 @@ const SignUp = () => {
       }
       const data = await res.json();
       if (data.error) {
-        console.log(data.error);
         throw new Error(data.error);
       }
       return data;
@@ -124,7 +123,7 @@ const SignUp = () => {
                 : 'bg-gradient-to-tr from-purple-500 to-orange-500 hover:bg-gradient-to-tl hover:scale-105'
             }`}
           >
-            {isLoading ? 'Loading' : 'Sign Up'}
+            {isPending ? 'Loading' : 'Sign Up'}
           </button>
         </form>
         <p className="text-center mt-4">
