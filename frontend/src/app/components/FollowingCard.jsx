@@ -13,7 +13,7 @@ const FollowingCard = ({ user }) => {
     queryKey: ['suggestedUsers'],
     queryFn: async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/users/suggested', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/users/suggested`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

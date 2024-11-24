@@ -14,7 +14,7 @@ const SearchUserWindow = ({ isOpen, onClose, users = {} }) => {
     queryKey: ['users', searchTerm],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:8000/api/users/profile/search/${searchTerm}`,
+        `${process.env.NEXT_PUBLIC_URL}api/users/profile/search/${searchTerm}`,
         {
           method: 'GET',
           headers: {

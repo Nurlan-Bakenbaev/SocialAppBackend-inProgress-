@@ -11,13 +11,16 @@ const LikedPosts = () => {
     queryKey: ['likedPosts'],
     queryFn: async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/posts/likedposts/${user._id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_URL}api/posts/likedposts/${user._id}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          }
+        );
         if (!res.ok) {
           throw new Error('Failed to fetch liked posts');
         }

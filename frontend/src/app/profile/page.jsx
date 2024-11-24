@@ -38,7 +38,7 @@ export const Profile = () => {
   } = useQuery({
     queryKey: ['authUser'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:8000/api/auth/getme', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/auth/getme`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -88,12 +88,15 @@ export const Profile = () => {
   } = useMutation({
     mutationFn: async (updatedUser) => {
       try {
-        const res = await fetch('http://localhost:8000/api/users/update', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(updatedUser),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_URL}api/users/update`,
+          {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(updatedUser),
+          }
+        );
         if (!res.ok) toast.error('Failed to update user');
       } catch (error) {
         toast.error('An error occurred during the update');

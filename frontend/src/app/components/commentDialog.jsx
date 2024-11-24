@@ -19,7 +19,7 @@ const CommentDialog = ({ data }) => {
   } = useMutation({
     mutationFn: async () => {
       const res = await fetch(
-        `http://localhost:8000/api/posts/comment/${data._id}`,
+        `${process.env.NEXT_PUBLIC_URL}api/posts/comment/${data._id}`,
         {
           method: 'POST',
           headers: {

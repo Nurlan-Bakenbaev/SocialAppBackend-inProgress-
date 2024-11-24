@@ -32,14 +32,17 @@ const CreatePost = () => {
   } = useMutation({
     mutationFn: async ({ preview: img, text }) => {
       try {
-        const res = await fetch('http://localhost:8000/api/posts/create', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ img, text }),
-          credentials: 'include',
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_URL}api/posts/create`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ img, text }),
+            credentials: 'include',
+          }
+        );
         if (!res.ok) {
           throw new Error(error);
         }

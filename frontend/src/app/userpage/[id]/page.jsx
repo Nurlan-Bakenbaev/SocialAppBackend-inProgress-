@@ -13,7 +13,7 @@ export const Profile = () => {
     queryKey: ['getUser', userId],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:8000/api/users/profile/${userId}`,
+        `${process.env.NEXT_PUBLIC_URL}api/users/profile/${userId}`,
         {
           method: 'GET',
           headers: {
@@ -73,7 +73,8 @@ export const Profile = () => {
             : user?.posts?.map((post, index) => (
                 <div
                   key={index}
-                  className="flex flex-row card bg-base-100 w-96 shadow-xl">
+                  className="flex flex-row card bg-base-100 w-96 shadow-xl"
+                >
                   <DaisyCard img={post.img} text={post.text} />
                 </div>
               ))}

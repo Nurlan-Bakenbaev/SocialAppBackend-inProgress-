@@ -1,28 +1,32 @@
-import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useFollow = () => {
   const queryClient = useQueryClient();
-  const authUser = queryClient.getQueryData(["authUser"]);
+  const authUser = queryClient.getQueryData(['authUser']);
 
-  const { mutate: followUnFollow, isLoading, error } = useMutation({
+  const {
+    mutate: followUnFollow,
+    isLoading,
+    error,
+  } = useMutation({
     mutationFn: async (userId) => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/users/follow/${userId}`,
+          `${process.env.NEXT_PUBLIC_URL}api/users/follow/${userId}`,
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-            credentials: "include",
+            credentials: 'include',
           }
         );
         if (!res.ok) {
           throw new Error(await res.text());
         }
         const data = await res.json();
-        toast.success("User followed successfully");
+        toast.success('User followed successfully');
         return data;
       } catch (error) {
         toast.error(error.error || "Couldn't follow");
@@ -30,8 +34,8 @@ const useFollow = () => {
     },
     onSuccess: () => {
       Promise.all([
-        queryClient.invalidateQueries(["suggestedUsers"]),
-        queryClient.invalidateQueries(["authUser"]),
+        queryClient.invalidateQueries(['suggestedUsers']),
+        queryClient.invalidateQueries(['authUser']),
       ]);
     },
   });

@@ -7,11 +7,11 @@ const Feed = ({ feedType }) => {
   const getPostEndPoint = () => {
     switch (feedType) {
       case 'latest':
-        return 'http://localhost:8000/api/posts/all';
+        return `${process.env.NEXT_PUBLIC_URL}api/posts/all`;
       case 'following':
-        return 'http://localhost:8000/api/posts/following';
+        return `${process.env.NEXT_PUBLIC_URL}api/posts/following`;
       default:
-        return 'http://localhost:8000/api/posts/all';
+        return `${process.env.NEXT_PUBLIC_URL}api/posts/all`;
     }
   };
   const POST_ENDPOINT = getPostEndPoint();

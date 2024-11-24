@@ -20,7 +20,7 @@ const Posts = ({ postData: { data } }) => {
     mutationFn: async (postId) => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/posts/like/${postId}`,
+          `${process.env.NEXT_PUBLIC_URL}api/posts/like/${postId}`,
           {
             method: 'POST',
             headers: {
@@ -52,7 +52,7 @@ const Posts = ({ postData: { data } }) => {
     mutationFn: async (postId) => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/posts/delete/${postId}`,
+          `${process.env.NEXT_PUBLIC_URL}api/posts/delete/${postId}`,
           {
             method: 'DELETE',
             headers: {

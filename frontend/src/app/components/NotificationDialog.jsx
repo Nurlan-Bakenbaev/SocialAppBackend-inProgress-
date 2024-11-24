@@ -17,7 +17,7 @@ const NotificationDialog = () => {
     queryFn: async () => {
       try {
         const res = await fetch(
-          'http://localhost:8000/api/notifications/notify',
+          `${process.env.NEXT_PUBLIC_URL}api/notifications/notify`,
           {
             method: 'GET',
             headers: {
@@ -46,7 +46,7 @@ const NotificationDialog = () => {
     mutationFn: async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/notifications/delete`,
+          `${process.env.NEXT_PUBLIC_URL}api/notifications/delete`,
           {
             method: 'DELETE',
             headers: {
