@@ -54,8 +54,7 @@ const NavBar = () => {
         <div className="flex-1">
           <Link
             className="uppercase text-3xl font-bold bg-gradient-to-r from-purple-500 to-orange-500 text-transparent bg-clip-text"
-            href="/"
-          >
+            href="/">
             Post-It
           </Link>
         </div>

@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Loading from './Loading';
 import CommentDialog from './commentDialog';
 
-const Posts = ({ postData: { data } }) => {
+const Posts = ({ postData }) => {
   const queryClient = useQueryClient();
   const authUser = queryClient.getQueryData(['authUser']);
 
@@ -77,32 +77,29 @@ const Posts = ({ postData: { data } }) => {
   const handleDeletePost = (postId) => {
     deletePost(postId);
   };
-  if (!data) {
+  if (!postData) {
     return <p>No posts found.</p>;
   }
   return (
     <div>
       {isPending && <Loading />}
-      {data?.map((post) => (
+      {postData?.map((post) => (
         <div
           key={post._id}
           className="shadow-md border 
         rounded-lg p-3 mt-4"
         >
-          {post.user && (
-            <>
-              <UserCard
-                userLogo={post?.user?.profileImg || '/userPlaceholder.png'}
-                date={post?.user?.date}
-                username={post?.user?.username}
-                fullname={post?.user?.fullname}
-                id={post.user?._id}
-              />
-              <p className="text-gray-400 text-sm">
-                Posted: {timeAgo(post.createdAt)}
-              </p>
-            </>
-          )}
+          <UserCard
+            userLogo={post?.user?.profileImg || '/userPlaceholder.png'}
+            date={post?.user?.date}
+            username={post?.user?.username}
+            fullname={post?.user?.fullname}
+            id={post.user?._id}
+          />
+
+          <p className="text-gray-400 text-right text-sm">
+            Posted: {timeAgo(post.createdAt)}
+          </p>
           <div>
             <p className="text-gray-700">{post.text}</p>
 

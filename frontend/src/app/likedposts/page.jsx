@@ -1,11 +1,12 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import Posts from '../components/Posts';
+import Loading from '../components/Loading';
 const LikedPosts = () => {
   const { data: user } = useQuery({ queryKey: ['authUser'] });
   const {
     data: likedPosts,
-    isLoading,
+    isLoading: isLikedLoading,
     error,
   } = useQuery({
     queryKey: ['likedPosts'],
@@ -30,11 +31,20 @@ const LikedPosts = () => {
       }
     },
   });
+  if (isLikedLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
   return (
     <div>
-      <div className="w-full flex flex-col  items-center justify-center">
-        <h2 className="text-2xl font-semibold">Liked posts: </h2>
-        <div>{likedPosts && <Posts postData={likedPosts} />}</div>
+      <div>
+        <h2 className="text-2xl font-semibold text-center">Liked posts: </h2>
+        <div className="flex flex-row flex-wrap items-center justify-center">
+          {likedPosts.data && <Posts postData={likedPosts.data} />}
+        </div>
       </div>
     </div>
   );

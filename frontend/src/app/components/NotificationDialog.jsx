@@ -8,11 +8,7 @@ import { FiAlertOctagon } from 'react-icons/fi';
 const NotificationDialog = () => {
   const queryClient = useQueryClient();
 
-  const {
-    data,
-    isLoading: notifyLoading,
-    error,
-  } = useQuery({
+  const { data } = useQuery({
     queryKey: ['getNotify'],
     queryFn: async () => {
       try {
@@ -37,11 +33,7 @@ const NotificationDialog = () => {
       }
     },
   });
-  const {
-    mutate: DeleteNotify,
-    isPending,
-    error: DeleteError,
-  } = useMutation({
+  const { mutate: DeleteNotify, isPending } = useMutation({
     mutationKey: ['deleteNotify'],
     mutationFn: async () => {
       try {
@@ -76,19 +68,21 @@ const NotificationDialog = () => {
         onClick={() => document.getElementById('notify').showModal()}
       >
         <FaRegBell className="shake-hover" fontSize={18} />
-        <span
-          className=" border bg-red-500 p-1 rounded-full w-5 h-5 
+        {data?.length ? (
+          <span
+            className=" border bg-red-500 p-1 rounded-full w-5 h-5 
         flex items-center absolute bottom-0  right-1 
          text-slate-200 font-bold "
-        >
-          {data?.length}
-        </span>
+          >
+            {data?.length}
+          </span>
+        ) : null}
       </button>
       <dialog id="notify" className="modal">
         <div className="modal-box">
           {data?.length === 0 ? (
             <span>
-              <FiAlertOctagon color="red" fontSize={25} />{' '}
+              <FiAlertOctagon color="red" fontSize={25} />
               <p>No notifications</p>
             </span>
           ) : (

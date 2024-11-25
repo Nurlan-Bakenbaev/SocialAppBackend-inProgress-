@@ -49,7 +49,7 @@ const Feed = ({ feedType }) => {
         {feedType === 'latest' ? 'Latest Posts' : 'Following posts'}
       </h2>
 
-      {!data || isRefetching ? <PostsSkeleton /> : <Posts postData={data} />}
+      {!data || isRefetching ? <PostsSkeleton /> : <Posts postData={data.data} />}
     </div>
   );
 };

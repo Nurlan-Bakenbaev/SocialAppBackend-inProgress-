@@ -2,6 +2,9 @@ import Link from 'next/link';
 import React from 'react';
 
 const UserCard = ({ userLogo, date, username, id, fullname }) => {
+  if (!username || !id) {
+    return null;
+  }
   return (
     <div>
       <Link href={`/userpage/${id}`}>

@@ -1,12 +1,13 @@
 'use client';
 import DaisyCard from '@/app/components/DaisyCard';
 import Loading from '@/app/components/Loading';
+import Posts from '@/app/components/Posts';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 export const Profile = () => {
   const { id: userId } = useParams();
   const {
-    data: userData,
+    data,
     isLoading,
     error: fetchError,
   } = useQuery({
@@ -28,7 +29,7 @@ export const Profile = () => {
     // RUNS ONLY WHEN userid is Set
     enabled: !!userId,
   });
-  const user = userData?.data;
+  console.log(data);
   if (isLoading)
     return (
       <div>
@@ -41,7 +42,7 @@ export const Profile = () => {
       <div className="relative w-full shadow-xl rounded-lg overflow-hidden">
         <div className="h-60 bg-slate-500 relative">
           <img
-            src={user?.coverImg || '/banner-placeholder.png'}
+            src={data.data?.coverImg || '/banner-placeholder.png'}
             alt="Banner"
             className="w-full h-full object-cover"
           />
@@ -50,17 +51,19 @@ export const Profile = () => {
         <div className="p-4 flex flex-col items-center">
           <div className="w-40 h-40 -mt-24 rounded-full ring-1 ring-slate-400 overflow-hidden relative">
             <img
-              src={user?.profileImg || '/user-place.png'}
+              src={data.data?.profileImg || '/user-place.png'}
               alt="Profile"
               className="w-full h-full object-cover bg-white"
             />
           </div>
 
           <div>
-            <h1 className="text-2xl font-semibold mt-2">{user?.fullname}</h1>
-            <p className="text-gray-500">{user?.username}</p>
+            <h1 className="text-2xl font-semibold mt-2">
+              {data.data?.fullname}
+            </h1>
+            <p className="text-gray-500">{data.data?.username}</p>
             <p className="text-center mt-2">
-              {user?.bio || 'This is my bio section'}
+              {data.data?.bio || 'This is my bio section'}
             </p>
           </div>
         </div>
@@ -68,14 +71,14 @@ export const Profile = () => {
       <div className="p-4">
         <h2 className="text-lg font-semibold mb-4">Recent Posts</h2>
         <div>
-          {user?.posts?.length === 0
+          {data.data?.posts?.length === 0
             ? 'User has no posts'
-            : user?.posts?.map((post, index) => (
+            : data.data?.posts?.map((post, index) => (
                 <div
                   key={index}
-                  className="flex flex-row card bg-base-100 w-96 shadow-xl"
+                  className="flex flex-row flex-wrap card bg-base-100 w-96 shadow-xl"
                 >
-                  <DaisyCard img={post.img} text={post.text} />
+                  <Posts postData={data?.data?.posts} />
                 </div>
               ))}
         </div>
