@@ -6,6 +6,7 @@ import UserInfo from './components/UserInfo';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import Feed from './components/Feed';
+import LoginDialog from './components/LoginDialog';
 const Home = () => {
   const [feedType, setFeedType] = useState('latest');
   const router = useRouter();
@@ -17,13 +18,16 @@ const Home = () => {
     queryKey: ['authUser'],
     queryFn: async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/auth/getme`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_URL}api/auth/getme`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          }
+        );
         if (!res.ok) {
           throw new Error('Failed to fetch user information');
         }
@@ -52,7 +56,7 @@ const Home = () => {
           <FollowingCard />
         </div>
       </div>
-
+      <LoginDialog />
       <div className="flex flex-col">
         <CreatePost />
         <div className="flex mt-4 items-center gap-4 justify-between">

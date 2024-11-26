@@ -2,10 +2,13 @@
 import DaisyCard from '@/app/components/DaisyCard';
 import Loading from '@/app/components/Loading';
 import Posts from '@/app/components/Posts';
+import useFollow from '@/hooks/useFollow';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import { FaUserPlus } from 'react-icons/fa';
 export const Profile = () => {
   const { id: userId } = useParams();
+  const { followUnFollow, isPending } = useFollow();
   const {
     data,
     isLoading,
@@ -29,7 +32,8 @@ export const Profile = () => {
     // RUNS ONLY WHEN userid is Set
     enabled: !!userId,
   });
-  console.log(data);
+  const { data: currentUser } = useQuery({ queryKey: ['authUser'] });
+
   if (isLoading)
     return (
       <div>
@@ -56,7 +60,17 @@ export const Profile = () => {
               className="w-full h-full object-cover bg-white"
             />
           </div>
-
+          {currentUser?._id !== userId && (
+            <button
+              onClick={(e) => {
+                e.preventDefault(), followUnFollow(userId);
+              }}
+              className="flex my-4 items-center bg-gradient-to-r from-purple-400 to-orange-400 text-white rounded py-1 px-3 hover:bg-blue-700 transition-colors"
+            >
+              <FaUserPlus className="mr-1" />
+              {isPending ? 'Loading...' : 'Follow'}
+            </button>
+          )}
           <div>
             <h1 className="text-2xl font-semibold mt-2">
               {data.data?.fullname}

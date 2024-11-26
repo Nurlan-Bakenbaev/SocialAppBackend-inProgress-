@@ -9,7 +9,7 @@ import FollowingDialogCard from './FollowingDialogCard';
 
 const UserInfo = () => {
   const { data: user, isLoading } = useQuery({ queryKey: ['authUser'] });
-  console.log(user);
+
   if (isLoading) return <UserInfoSkeleton />;
   return (
     <div
@@ -24,7 +24,7 @@ const UserInfo = () => {
       <div className="p-2 ">
         <Link
           href={'/profile'}
-          className="flex  flex-col sm:flex-row items-center mb-3 text-white relative z-20 "
+          className="flex  flex-col sm:flex-row items-center mb-3 text-white relative  "
         >
           <Image
             width={40}
