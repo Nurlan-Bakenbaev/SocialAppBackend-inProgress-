@@ -6,11 +6,10 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { timeAgo } from '@/app/components/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Loading from './Loading';
-import CommentDialog from './CommentDialog';
+import CommentDialog from './CommentModul';
 const Posts = ({ postData }) => {
   const queryClient = useQueryClient();
   const authUser = queryClient.getQueryData(['authUser']);
-
   const {
     mutate: likeUnLike,
     isPending: isLiking,
