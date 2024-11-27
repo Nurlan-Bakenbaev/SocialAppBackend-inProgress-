@@ -49,18 +49,7 @@ const SignUp = () => {
   };
   return (
     <div>
-      <div className="flex items-center justify-center h-screen gap-6">
-        <div
-          className="hidden md:block "
-          style={{
-            backgroundImage: "url('/signUp.jpg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            height: '600px',
-            width: '500px',
-            borderRadius: "40px"
-          }}
-        ></div>
+      <div className="flex items-center justify-center h-screen">
         <fieldset
           className={`w-full max-w-sm p-4 shadow-lg
        rounded-lg duration-300 hover:scale-105 bg-white 
