@@ -57,7 +57,13 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen my-auto  ">
-      <fieldset className="w-full  max-w-md p-4 shadow-xl space-y-3 rounded-lg bg-white">
+      <fieldset
+        className={`w-full  max-w-md p-5 shadow-xl 
+          space-y-3 rounded-lg
+           bg-white duration-300 hover:scale-105 ${
+          error && 'error-shake'
+        }`}
+      >
         <h2 className="text-xl font-bold text-center">Login</h2>
         <form className="space-y-2" onSubmit={handleSubmit}>
           <div>
@@ -109,5 +115,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

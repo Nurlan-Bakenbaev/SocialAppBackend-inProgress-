@@ -48,7 +48,11 @@ const SignUp = () => {
   };
   return (
     <div className="flex items-center justify-center mt-10">
-      <fieldset className="w-full max-w-md p-5 shadow-lg rounded-lg ">
+      <fieldset
+        className={`w-full max-w-md p-5 shadow-lg
+       rounded-lg duration-300 hover:scale-105 
+        ${error && 'error-shake'}`}
+      >
         <h2 className="text-xl font-bold text-center mb-2">Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div>
@@ -61,7 +65,7 @@ const SignUp = () => {
               id="fullname"
               type="text"
               value={userData.fullname}
-              placeholder="Jake Nolan"
+              placeholder="Will Smith"
               className="input input-bordered w-full"
               required
             />
@@ -76,7 +80,7 @@ const SignUp = () => {
               id="username"
               type="text"
               value={userData.username}
-              placeholder="nolan_1991"
+              placeholder="will_smith"
               className="input input-bordered w-full"
               required
             />
@@ -91,7 +95,7 @@ const SignUp = () => {
               id="email"
               type="email"
               value={userData.email}
-              placeholder="example@mail.com"
+              placeholder="willsmith@mail.com"
               className="input input-bordered w-full"
               required
             />
