@@ -17,18 +17,17 @@ const LoginDialog = () => {
     <div>
       <dialog id="login_modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">
+          <h3 className="text-xl font-bold text-center">
             Please
-            <Link className="mx-1 hover:text-blue-400 text-blue-700" href={'/auth'}>
-              Sign Up!
+            <Link
+              className="mx-1 hover:text-blue-400 text-blue-700"
+              href={'/auth'}
+            >
+              Sign Up !
             </Link>
           </h3>
           <p>Please log in or sign up to gain access to Post-IT.</p>
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn">Close</button>
-            </form>
-          </div>
+          <div className="modal-action"></div>
         </div>
       </dialog>
     </div>

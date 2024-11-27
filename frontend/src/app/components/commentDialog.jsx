@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa';
-import { timeAgo } from './helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
