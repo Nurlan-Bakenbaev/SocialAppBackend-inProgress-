@@ -16,28 +16,38 @@ const UserInfo = () => {
       className="border bg-base-100 shadow-md 
     rounded-lg  w-[320px]  mx-auto relative overflow-hidden"
     >
-      <img
-        className="h-[85px] w-full opacity-85 absolute object-cover  "
-        src={user?.coverImg || '/colorful.jpeg'}
-        alt="Cover-Image"
-      />
+      {user ? (
+        <Image
+          width={85}
+          height={50}
+          className="w-full opacity-85 absolute object-cover  "
+          src={user?.coverImg || '/colorful.jpeg'}
+          alt="Cover-Image"
+        />
+      ) : (
+        <div className="absolute w-full h-[80px] bg-slate-200" />
+      )}
       <div className="p-2 ">
-        <Link
-          href={'/profile'}
-          className="flex  flex-col sm:flex-row items-center mb-3 text-white relative  "
-        >
-          <Image
-            width={40}
-            height={40}
-            src={user?.profileImg || '/userPlaceholder.png'}
-            alt="User Profile"
-            className="w-16 h-16 object-cover rounded-full mx-2"
-          />
-          <div className="text-center sm:text-left bg-slate-600 bg-opacity-50 px-4">
-            <h2 className="text-lg font-semibold">{user?.fullname}</h2>
-            <p className="text-sm">@{user?.username}</p>
-          </div>
-        </Link>
+        {user ? (
+          <Link
+            href={'/profile'}
+            className="flex  flex-col sm:flex-row items-center mb-3 text-white relative  "
+          >
+            <Image
+              width={40}
+              height={40}
+              src={user?.profileImg}
+              alt="User Profile"
+              className="w-16 h-16 object-cover rounded-full mx-2"
+            />
+            <div className="text-center sm:text-left bg-slate-600 bg-opacity-50 px-4">
+              <h2 className="text-lg font-semibold">{user?.fullname}</h2>
+              <p className="text-sm">@{user?.username}</p>
+            </div>
+          </Link>
+        ) : (
+          <p className="relative py-8 text-center text-black z-10"> NO USER </p>
+        )}
 
         <div className="flex flex-wrap justify-center sm:justify-start">
           <div className="flex items-center mb-1 mr-2">
