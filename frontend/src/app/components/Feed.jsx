@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Posts from './Posts';
 import PostsSkeleton from './Skeleton/PostSkeletone';
 import { useQuery } from '@tanstack/react-query';
+import Loading from './Loading';
 
 const Feed = ({ feedType }) => {
   const getPostEndPoint = () => {
@@ -37,6 +38,7 @@ const Feed = ({ feedType }) => {
       }
     },
   });
+
   useEffect(() => {
     refetch();
   }, [feedType, refetch]);
@@ -49,7 +51,11 @@ const Feed = ({ feedType }) => {
         {feedType === 'latest' ? 'Latest Posts' : 'Following posts'}
       </h2>
 
-      {!data || isRefetching ? <PostsSkeleton /> : <Posts postData={data.data} />}
+      {!data || isRefetching ? (
+        <PostsSkeleton />
+      ) : (
+        <Posts postData={data.data} />
+      )}
     </div>
   );
 };

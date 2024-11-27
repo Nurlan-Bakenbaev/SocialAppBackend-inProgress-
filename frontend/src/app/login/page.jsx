@@ -60,9 +60,7 @@ const Login = () => {
       <fieldset
         className={`w-full  max-w-md p-5 shadow-xl 
           space-y-3 rounded-lg
-           bg-white duration-300 hover:scale-105 ${
-          error && 'error-shake'
-        }`}
+           bg-white duration-300 hover:scale-105 ${error && 'error-shake'}`}
       >
         <h2 className="text-xl font-bold text-center">Login</h2>
         <form className="space-y-2" onSubmit={handleSubmit}>
@@ -106,7 +104,7 @@ const Login = () => {
           </button>
         </form>
         <p className="text-center">
-          Don't have an account?
+          Have not an account?
           <Link href="/auth" className="link text-blue-600">
             Sign Up
           </Link>

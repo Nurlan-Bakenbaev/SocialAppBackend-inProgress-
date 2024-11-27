@@ -1,4 +1,5 @@
 import useFollow from '@/hooks/useFollow';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { FaUserPlus, FaUsers } from 'react-icons/fa';
@@ -32,7 +33,9 @@ const FollowingDialogCard = ({ user }) => {
                   href={`/userpage/${item._id}`}
                   className="flex flex-row gap-2 items-center hover:font-bold"
                 >
-                  <img
+                  <Image
+                    height={40}
+                    width={40}
                     className="w-[30px] h-[30px]  rounded-full"
                     src={item.profileImg || '/userPlaceholder.png'}
                     alt={item.username}

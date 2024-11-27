@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 
 const SearchUserWindow = ({ isOpen, onClose, users = {} }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,10 +38,12 @@ const SearchUserWindow = ({ isOpen, onClose, users = {} }) => {
     <div className="fixed inset-0 flex items-center justify-center z-20">
       <div className="fixed inset-0 bg-black opacity-60" onClick={onClose} />
       <div className="flex bg-slate-50 rounded-lg shadow-lg z-10 p-5 flex-col">
+        <label htmlFor="user-find">Find User</label>
         <div>
           <input
+            id="user-find"
             type="text"
-            placeholder="Find user"
+            placeholder="username"
             className="input input-bordered focus:outline-none  mb-4 min-w-[320px]"
             value={searchTerm}
             onChange={handleSearchChange}
@@ -55,7 +58,9 @@ const SearchUserWindow = ({ isOpen, onClose, users = {} }) => {
                 onClick={onClose}
               >
                 <div className="mt-2 flex items-center mb-2 gap-2 p-4 hover:bg-slate-200 rounded">
-                  <img
+                  <Image
+                    height={40}
+                    width={40}
                     src={user.profileImg || '/defaultProfile.png'}
                     alt="User Logo"
                     className="rounded-full w-[35px] h-[35px] object-cover"

@@ -33,7 +33,6 @@ export const Profile = () => {
     enabled: !!userId,
   });
   const { data: currentUser } = useQuery({ queryKey: ['authUser'] });
-
   if (isLoading)
     return (
       <div>
@@ -46,7 +45,7 @@ export const Profile = () => {
       <div className="relative w-full shadow-xl rounded-lg overflow-hidden">
         <div className="h-60 bg-slate-500 relative">
           <img
-            src={data.data?.coverImg || '/banner-placeholder.png'}
+            src={data.data?.coverImg || '/meta-banner.jpg'}
             alt="Banner"
             className="w-full h-full object-cover"
           />
@@ -79,22 +78,25 @@ export const Profile = () => {
             <p className="text-center mt-2">
               {data.data?.bio || 'This is my bio section'}
             </p>
+            <p>
+              Created:
+              {new Date(data.data.createdAt).toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </p>
           </div>
         </div>
       </div>
       <div className="p-4">
         <h2 className="text-lg font-semibold mb-4">Recent Posts</h2>
         <div>
-          {data.data?.posts?.length === 0
-            ? 'User has no posts'
-            : data.data?.posts?.map((post, index) => (
-                <div
-                  key={index}
-                  className="flex flex-row flex-wrap card bg-base-100 w-96 shadow-xl"
-                >
-                  <Posts postData={data?.data?.posts} />
-                </div>
-              ))}
+          {data.data?.posts?.length === 0 ? (
+            ' No posts'
+          ) : (
+            <Posts postData={data?.data?.posts} />
+          )}
         </div>
       </div>
     </div>

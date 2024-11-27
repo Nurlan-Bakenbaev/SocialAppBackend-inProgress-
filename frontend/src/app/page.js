@@ -42,7 +42,7 @@ const Home = () => {
     if (!loading && !authUser) {
       router.push('/login');
     }
-  }, [authUser, router]);
+  }, [authUser, router, loading]);
   return (
     <div
       className="px-2 flex 

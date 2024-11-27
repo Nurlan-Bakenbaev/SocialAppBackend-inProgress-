@@ -90,7 +90,7 @@ const Posts = ({ postData }) => {
         rounded-lg p-3 mt-4"
         >
           <UserCard
-            userLogo={post?.user?.profileImg || '/userPlaceholder.png'}
+            userLogo={post?.user?.profileImg || null}
             date={post?.user?.date}
             username={post?.user?.username}
             fullname={post?.user?.fullname}
@@ -105,7 +105,7 @@ const Posts = ({ postData }) => {
 
             {post?.img && (
               <Image
-                src={post?.img}
+                src={post?.img || null}
                 alt="Post-Img"
                 width={600}
                 height={400}

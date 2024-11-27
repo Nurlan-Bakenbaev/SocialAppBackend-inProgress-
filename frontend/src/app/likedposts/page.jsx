@@ -4,9 +4,10 @@ import Posts from '../components/Posts';
 import Loading from '../components/Loading';
 const LikedPosts = () => {
   const { data: user } = useQuery({ queryKey: ['authUser'] });
+
   const {
     data: likedPosts,
-    isLoading: isLikedLoading,
+    isLoading,
     error,
   } = useQuery({
     queryKey: ['likedPosts'],
@@ -30,8 +31,9 @@ const LikedPosts = () => {
         throw new Error(error.message);
       }
     },
+    enabled: !!user?._id,
   });
-  if (isLikedLoading) {
+  if (isLoading) {
     return (
       <div>
         <Loading />
@@ -43,7 +45,7 @@ const LikedPosts = () => {
       <div>
         <h2 className="text-2xl font-semibold text-center">Liked posts: </h2>
         <div className="flex flex-row flex-wrap items-center justify-center">
-          {likedPosts.data && <Posts postData={likedPosts.data} />}
+          {likedPosts?.data && <Posts postData={likedPosts.data} />}
         </div>
       </div>
     </div>

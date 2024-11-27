@@ -18,9 +18,9 @@ const UserInfo = () => {
     >
       {user ? (
         <Image
-          width={85}
+          width={50}
           height={50}
-          className="w-full opacity-85 absolute object-cover  "
+          className=" w-full h-[85px] absolute object-cover  "
           src={user?.coverImg || '/colorful.jpeg'}
           alt="Cover-Image"
         />
@@ -46,7 +46,7 @@ const UserInfo = () => {
             </div>
           </Link>
         ) : (
-          <p className="relative py-8 text-center text-black z-10"> NO USER </p>
+          <p className="relative py-8 text-center text-black z-0"> NO USER </p>
         )}
 
         <div className="flex flex-wrap justify-center sm:justify-start">
