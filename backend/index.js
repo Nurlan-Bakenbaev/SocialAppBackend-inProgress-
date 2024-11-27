@@ -13,7 +13,7 @@ const app = express();
 dotenv.config();
 app.use(
   cors({
-    origin: "https://social-app-backend-in-progress.vercel.app",
+    origin: "https://social-app-backend-in-progress-lyydpyhq0.vercel.app",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
